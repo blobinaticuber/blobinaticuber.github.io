@@ -25,6 +25,11 @@ h1 {
   color: #a200ff;
   font-weight: bold;
 }
+h2 {
+  font-size: 4em;
+  color: red;
+  font-weight: bold;
+}
 
 ol, ul {
   list-style: none; }
