@@ -19,7 +19,10 @@ time, mark, audio, video {
   vertical-align: baseline; }
 
 body {
-  line-height: 1; }
+  line-height: 1;
+  background-color: black;
+ }
+
 h1 {
   font-size: 8em;
   color: #a200ff;
