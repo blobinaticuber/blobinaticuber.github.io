@@ -33,6 +33,11 @@ h2 {
   color: red;
   font-weight: bold;
 }
+h3 {
+  font-size: 3em;
+  color:white;
+  font-weight: bold;
+}
 
 ol, ul {
   list-style: none; }
