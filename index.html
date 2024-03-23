@@ -23,27 +23,37 @@
   <div class="main3">
 
     <div style="background-color: brown; padding:20px">
-      <h3>XP</h3>
+      <center>
+        <h3>XP</h3>
+      </center>
     </div>
 
     <div class="solveButton" style="background-color: darkkhaki; padding:20px">
+      <center>
+        <h3>Solve</h3>
+      </center>
       <p>⬇️ Click to solve ⬇️</p>
       <button id="cubie" onclick="solve()"
         style="background-color: #e7e7e7; color: black; padding: 8px 8px; border-radius: 12px;">
         <img src="3d.png" width="200" height="200">
       </button>
       <h3>Current solve: <span id="maintimer">45</span>s</h3> <br>
-      <div class="solve-progress-container">
-        <div class="solveprog sov">1/5</div>
-      </div>
+
+      <label for="solve-progress">Current Solve: </label>
+      <progress id="solve-progress" value="0" max="100"> </progress>
+
+
+
 
 
     </div>
 
     <div style="background-color:darkslategray; padding:20px">
-      <h3>Stats</h3>
+      <center>
+        <h3>Stats</h3>
+      </center>
       <p>⚡Speed: <span id="avg">45s</p>
-      <div class="skills-container">
+      <div class="progress-container">
         <div class="skills tps">1/5</div>
       </div>
       <button id="upgrade" onclick="upgrade()"> UPGRADE</button>
@@ -76,15 +86,10 @@
     float: left;
   }
 
-  .solve-progress-container {
+  .progress-container {
     width: 100%;
     background-color: #757575;
 
-  }
-
-  .skills-container {
-    width: 100%;
-    background-color: #ddd;
   }
 
   .skills {
@@ -125,6 +130,7 @@
 
 
   function solve() {
+    document.getElementById("solve-progress").max = solving_time;
     var countDownDate = new Date().getTime() + (solving_time * 1000)
     var x = setInterval(function () {
       var now = new Date().getTime();
@@ -132,6 +138,8 @@
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
       document.getElementById("maintimer").innerHTML = seconds;
       document.getElementById("upgrade").disabled = true;
+      document.getElementById("solve-progress").value = (solving_time-seconds);
+      // document.getElementById("solveprog").style.width = (solving_time - distance);
 
       if (distance < 1) {
         clearInterval(x);
