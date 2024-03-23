@@ -1,15 +1,108 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link href="screen.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Rowan Fortier</title>
-  </head>
-  <body class="index">
-    <div id="main" role="main">
-      <h1>Cubing Level</h1>
-      <h3>Ever wondered how much you know about cubing? Well this cubing level test is the test that you nede to be tested on 👍</h3>
-      <input type="checkbox" id="box1" name="thing1" value="cube">
+
+<head>
+  <meta charset="utf-8" />
+  <link href="screen.css" media="screen" rel="stylesheet" type="text/css" />
+  <title>Cubie Clicker</title>
+</head>
+
+<body class="index">
+  <div id="main" role="main">
+    <h1>Cubie Clicker</h1>
+    <p>Lore: You are a beginner cuber. One day, a mysterious package shows up at ur house containing
+      43,252,003,274,489,856,000 differently scrambled Rubik's Cubes. Your task: SOLVE THEM ALL!!</p>
+
+    <hscram><span id="solved">43252003274489860000</span></hscram>
+    <h3> <span id="maintimer">Current solve:</span> </h3> <br>
+  </div>
+  <br>
+  <button id="cubie" onclick="solve()"
+    style="background-color: #e7e7e7; color: black; padding: 8px 8px; border-radius: 12px;">
+    <img src="image.png">
+  </button>
+
+  <div class="stats" style="background-color:darkslategray; padding:20px">
+    <h3>Stats</h3>
+    <p>⚡Speed: <span id="avg">45</p>
+
+    <div class="skills-container">
+      <div class="skills tps">1/5</div>
+
     </div>
-  </body>
+
+    <button onclick="upgrade()" > UPGRADE</button>
+
+  </div>
+
+
+  <input type="checkbox" id="box1" name="thing1" value="cube">
+
+</body>
+
 </html>
+
+<style>
+  div.stats {
+    width: 33%;
+    float: right;
+  }
+
+  .skills-container {
+    width: 100%;
+    background-color: #ddd;
+  }
+
+  .skills {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+  }
+
+  .tps {
+    width: 90%;
+    background-color: green;
+  }
+</style>
+
+<script>
+  var solved = 43252003274489856000n
+  var solved_max = 43252003274489856000
+  var solving_time = 45
+
+
+  function upgrade() {
+    if (solving_time > 2) solving_time -= 2;
+    document.getElementById("avg").innerHTML = solving_time;
+  }
+
+
+  function solve() {
+    var countDownDate = new Date().getTime() + (solving_time*1000)
+    var x = setInterval(function () {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById("maintimer").innerHTML = "Current solve: " + seconds + "s"
+
+      if (distance < 1) {
+        clearInterval(x);
+        document.getElementById("maintimer").innerHTML = "Current solve: "
+        document.getElementById("cubie").disabled = false;
+        solved--;
+        document.getElementById("solved").innerHTML = solved;
+      }
+    }, 1000);
+
+
+    document.getElementById("cubie").disabled = true;
+
+
+
+
+
+  }
+
+
+</script>
