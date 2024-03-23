@@ -13,39 +13,73 @@
     <p>Lore: You are a beginner cuber. One day, a mysterious package shows up at ur house containing
       43,252,003,274,489,856,000 differently scrambled Rubik's Cubes. Your task: SOLVE THEM ALL!!</p>
 
-    <hscram><span id="solved">43252003274489860000</span></hscram>
-    <h3> <span id="maintimer">Current solve:</span> </h3> <br>
+    <center>
+      <hscram>Cubes remaining: <span id="solved">43252003274489860000</span></hscram>
+    </center>
+
   </div>
   <br>
-  <button id="cubie" onclick="solve()"
-    style="background-color: #e7e7e7; color: black; padding: 8px 8px; border-radius: 12px;">
-    <img src="image.png">
-  </button>
 
-  <div class="stats" style="background-color:darkslategray; padding:20px">
-    <h3>Stats</h3>
-    <p>⚡Speed: <span id="avg">45</p>
+  <div class="main3">
 
-    <div class="skills-container">
-      <div class="skills tps">1/5</div>
+    <div style="background-color: brown; padding:20px">
+      <h3>XP</h3>
+    </div>
+
+    <div class="solveButton" style="background-color: darkkhaki; padding:20px">
+      <p>⬇️ Click to solve ⬇️</p>
+      <button id="cubie" onclick="solve()"
+        style="background-color: #e7e7e7; color: black; padding: 8px 8px; border-radius: 12px;">
+        <img src="3d.png" width="200" height="200">
+      </button>
+      <h3>Current solve: <span id="maintimer">45</span>s</h3> <br>
+      <div class="solve-progress-container">
+        <div class="solveprog sov">1/5</div>
+      </div>
+
 
     </div>
 
-    <button onclick="upgrade()" > UPGRADE</button>
+    <div style="background-color:darkslategray; padding:20px">
+      <h3>Stats</h3>
+      <p>⚡Speed: <span id="avg">45s</p>
+      <div class="skills-container">
+        <div class="skills tps">1/5</div>
+      </div>
+      <button id="upgrade" onclick="upgrade()"> UPGRADE</button>
+    </div>
 
   </div>
 
 
-  <input type="checkbox" id="box1" name="thing1" value="cube">
+  <!-- <input type="checkbox" id="box1" name="thing1" value="cube"> -->
+
+
+  <footer>
+    <p>Made by Rowan Fortier<br>
+      <a href="https://www.youtube.com/c/RowanFortier">Rowan Fortier on YouTube</a>
+    </p>
+  </footer>
 
 </body>
 
 </html>
 
 <style>
-  div.stats {
-    width: 33%;
-    float: right;
+  div.main3 {
+    width: 100%;
+    overflow: auto;
+  }
+
+  div.main3 div {
+    width: 30%;
+    float: left;
+  }
+
+  .solve-progress-container {
+    width: 100%;
+    background-color: #757575;
+
   }
 
   .skills-container {
@@ -64,6 +98,17 @@
     width: 90%;
     background-color: green;
   }
+
+  footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 3px;
+    background-color: DarkSalmon;
+    color: white;
+  }
 </style>
 
 <script>
@@ -74,22 +119,25 @@
 
   function upgrade() {
     if (solving_time > 2) solving_time -= 2;
-    document.getElementById("avg").innerHTML = solving_time;
+    document.getElementById("avg").innerHTML = solving_time + "s";
+    document.getElementById("maintimer").innerHTML = solving_time;
   }
 
 
   function solve() {
-    var countDownDate = new Date().getTime() + (solving_time*1000)
+    var countDownDate = new Date().getTime() + (solving_time * 1000)
     var x = setInterval(function () {
       var now = new Date().getTime();
       var distance = countDownDate - now;
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      document.getElementById("maintimer").innerHTML = "Current solve: " + seconds + "s"
+      document.getElementById("maintimer").innerHTML = seconds;
+      document.getElementById("upgrade").disabled = true;
 
       if (distance < 1) {
         clearInterval(x);
-        document.getElementById("maintimer").innerHTML = "Current solve: "
+        document.getElementById("maintimer").innerHTML = solving_time;
         document.getElementById("cubie").disabled = false;
+        document.getElementById("upgrade").disabled = false;
         solved--;
         document.getElementById("solved").innerHTML = solved;
       }
@@ -97,6 +145,7 @@
 
 
     document.getElementById("cubie").disabled = true;
+    // document.getElementById("solved").style.color = "blue";
 
 
 
