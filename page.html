@@ -22,6 +22,10 @@
 
     <p>Metric Time: <span id="metHour"></span>:<span id="metMin"></span>:<span id="metSec"></span></p>
 
+    <p>Binary Time: <span id="bin1"></span> <span id="bin2"></span> <span id="bin3"> </span> <span id="bin4"></span> </p>
+
+    <p>Hex time: <span id="hex"></span></p>
+
 </body>
 
 <script>
@@ -60,9 +64,24 @@
         document.getElementById("metHour").innerHTML = metricHour;
         document.getElementById("metMin").innerHTML = metricMinute < 10 ? "0" + metricMinute.toString() : metricMinute;
         document.getElementById("metSec").innerHTML = metricSecond< 10 ? "0" + metricSecond.toString() : metricSecond;
+
+        let binarySecondFromMidnight =ImperialMillisecondsFromMidnight*(65536/86400)/1000;
+        document.getElementById("bin1").innerHTML = (truncateString(DecimalToBinary(binarySecondFromMidnight)));
+
+        let hexSecondFromMidnight = binarySecondFromMidnight.toString(16);
+        document.getElementById("hex").innerHTML = (truncateString(hexSecondFromMidnight.toUpperCase()));
     }
 
     setInterval(updateTime, 100);
+
+    function DecimalToBinary(d) {
+        return d.toString(2);
+    }
+
+    function truncateString(str) {
+        let array = str.split(".");
+        return array[0];
+    }
 
 
 
