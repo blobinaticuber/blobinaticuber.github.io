@@ -2,6 +2,9 @@
 
 This is the personal website of Rowan Fortier. It's like seeing a soup of my random thoughts 🦞✨
 
+[Funny Clocks](/page.html)
+- A thing I made to show some funny timekeeping methods.
+
 ### YouTube
 Been making videos on various channels since I was 9 years old 💀
 
