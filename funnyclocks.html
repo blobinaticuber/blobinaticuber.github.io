@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Funny Clocks</title>
 </head>
-
+ 
 <body style="background-color:black;">
 
     <h1>FUNNY CLOCKS</h1>
@@ -22,7 +22,8 @@
 
     <p>Metric Time: <span id="metHour"></span>:<span id="metMin"></span>:<span id="metSec"></span></p>
 
-    <p>Binary Time: <span id="bin1"></span> <span id="bin2"></span> <span id="bin3"> </span> <span id="bin4"></span> </p>
+    <p>Binary Time: <span id="bin1"></span> <span id="bin2"></span> <span id="bin3"> </span> <span id="bin4"></span>
+    </p>
 
     <p>Hex time: <span id="hex"></span></p>
 
@@ -52,20 +53,20 @@
         // millisecond stuff
         let ImperialMillisecondsFromMidnight = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds;
         document.getElementById("totalSec").innerHTML = parseInt(ImperialMillisecondsFromMidnight / 1000);
-        let MetricMillisecondsFromMidnight = ImperialMillisecondsFromMidnight*(100000/86400);
+        let MetricMillisecondsFromMidnight = ImperialMillisecondsFromMidnight * (100000 / 86400);
         document.getElementById("metricSec").innerHTML = parseInt(MetricMillisecondsFromMidnight / 1000);
-        
-        
+
+
         let metricSecondFromMidnight = Math.trunc(MetricMillisecondsFromMidnight / 1000);
-        let metricHour = Math.trunc(metricSecondFromMidnight/10000);
-        let metricMinute = Math.trunc((metricSecondFromMidnight - metricHour*10000) / 100);
-        let metricSecond = metricSecondFromMidnight - metricHour*10000 - metricMinute*100;
+        let metricHour = Math.trunc(metricSecondFromMidnight / 10000);
+        let metricMinute = Math.trunc((metricSecondFromMidnight - metricHour * 10000) / 100);
+        let metricSecond = metricSecondFromMidnight - metricHour * 10000 - metricMinute * 100;
 
         document.getElementById("metHour").innerHTML = metricHour;
         document.getElementById("metMin").innerHTML = metricMinute < 10 ? "0" + metricMinute.toString() : metricMinute;
-        document.getElementById("metSec").innerHTML = metricSecond< 10 ? "0" + metricSecond.toString() : metricSecond;
+        document.getElementById("metSec").innerHTML = metricSecond < 10 ? "0" + metricSecond.toString() : metricSecond;
 
-        let binarySecondFromMidnight =ImperialMillisecondsFromMidnight*(65536/86400)/1000;
+        let binarySecondFromMidnight = ImperialMillisecondsFromMidnight * (65536 / 86400) / 1000;
         document.getElementById("bin1").innerHTML = (truncateString(DecimalToBinary(binarySecondFromMidnight)));
 
         let hexSecondFromMidnight = binarySecondFromMidnight.toString(16);

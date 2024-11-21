@@ -5,7 +5,7 @@ This is the personal website of Rowan Fortier. It's like seeing a soup of my ran
 ## Projects
 - [Hypercubing Website](https://hypercubing.xyz): A wiki and leaderboard for the Hypercubing community.
 - [3x3x3 Simulator](https://github.com/blobinaticuber/3x3x3-simulator): My first real Rubik's Cube simulator, using linear algebra.
-- [Funny Clocks](/page.html): A thing I made to display some funny timekeeping methods.
+- [Funny Clocks](/funnyclocks.html): A thing I made to display some funny timekeeping methods.
 
 
 ### YouTube
