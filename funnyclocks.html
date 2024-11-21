@@ -8,11 +8,24 @@
 
 
 
-<body style="background-color:black;">
+<body style="background-color:black; overflow-x: hidden;">
 
-    <h1>FUNNY CLOCKS</h1>
+    <div class="title">
+        <form>
+        <button class="button-85" formaction="\index.md">Back to main page</button>
+        </form>
+        <!-- <form action="\index.md">
+            <input class="button-85" type="submit" value="Back to main page" />
+        </form> -->
+        
+        <h1>FUNNY CLOCKS</h1>
+        <iframe
+            src="https://free.timeanddate.com/clock/i9n7c2i7/n1093/szw110/szh110/hoc222/hbw6/cf100/hgr0/hcw2/hcd88/fan2/fas20/fdi70/mqc000/mqs3/mql13/mqw4/mqd94/mhc000/mhs3/mhl13/mhw4/mhd94/mmc000/mml5/mmw1/mmd94/hwm2/hhs2/hhb18/hms2/hml80/hmb18/hmr7/hscf09/hss1/hsl90/hsr5"
+            frameborder="0" width="110" height="110"></iframe>
 
-    <a class="butt" href="\index.md">Back to main page</a>
+    </div>
+
+
 
     <p>This website shows a bunch of clocks in silly formats for fun.</p>
 
@@ -33,8 +46,81 @@
     <p>Hex time: <span id="hex"></span></p>
 
     <style>
-        .butt:hover {
-            background-color: burlywood;
+        .title {
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+        }
+
+        .button-85 {
+            padding: 0.6em 2em;
+            border: none;
+            outline: none;
+            color: rgb(255, 255, 255);
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+
+        .button-85:before {
+            content: "";
+            background: linear-gradient(45deg,
+                    #ff0000,
+                    #ff7300,
+                    #fffb00,
+                    #48ff00,
+                    #00ffd5,
+                    #002bff,
+                    #7a00ff,
+                    #ff00c8,
+                    #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-button-85 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing-button-85 {
+            0% {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 400% 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        .button-85:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #222;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
         }
     </style>
 
