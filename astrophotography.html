@@ -11,7 +11,7 @@
     <div class='twinkling'></div>
     <div class='clouds'></div>
 
-    <div class='test'>
+    <div class='title'>
         <form>
             <button class="button-85" formaction="https://blobinaticuber.github.io/">Back to main page</button>
         </form>
@@ -22,9 +22,16 @@
     </div>
 
     <div class="gallery">
-        <img src="\images\2017_eclipse_2.JPEG" width="500"> 
-        <div class="date"><h2>2017</h2></div>
-        <div class="imgdescription"> Description of the image</div>
+        <img id="image" src="/images/2017_eclipse_1.JPEG" width="800"> 
+        <div class="imgdescription">
+            <h2 id="date"></h2> 
+            <p id="description"></p>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="prev()">Previous</button>
+        <button onclick="next()">Next</button>
     </div>
 
 
@@ -36,24 +43,37 @@
     div.gallery {
         border: 2px solid white;
         float: center;
-        width: 500px;
+        width: 1800px;
         margin: auto;
+        display: flex;
+        align-items: center;
     }
     div.gallery img {
-        width: 100%;
+        float: left;
+        width: 500px;
         height: auto;
-        border: 1px solid white;
+        border: 2px solid white;
     }
-    div.gallery .date {
-        text-align: center;
-    }
-    div.imgdescription {
+    div.imgdescription p {
         padding: 15px;
+        float: center;
         text-align: center;
     }
 
+    div.imgdescription h2 {
+        padding: 15px;
+    }
 
-    .test {
+    .button-container {
+        padding: 20px;
+        float: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .title {
         margin: 0 auto;
         padding: 20px;
         justify-content: space-evenly;
@@ -178,6 +198,30 @@
 </style>
 
 </body>
+
+<script>
+    imglist = ["/images/2017_eclipse_1.JPEG", "/images/2017_eclipse_2.JPEG"];
+    datelist = ["2017-Aug-21", "2017-Aug-21"];
+    desclist = ["Total solar eclipse 2017. Taken from iPhone 5s through eclipse glasses.", 
+            "Total solar eclipse 2017. Venus is visible in between the eclipse and the horizon."];
+    pos = 0;
+
+    next();
+    prev();
+
+    function next() {
+        pos == imglist.length-1 ? pos=0 : pos++;
+        document.getElementById("image").src = imglist[pos];
+        document.getElementById("date").innerHTML = datelist[pos];
+        document.getElementById("description").innerHTML = desclist[pos];
+    }
+    function prev() {
+        pos == 0 ? pos=imglist.length-1 : pos--;
+        document.getElementById("image").src = imglist[pos];
+        document.getElementById("date").innerHTML = datelist[pos];
+        document.getElementById("description").innerHTML = desclist[pos];
+    }
+</script>
 
 
 </html>
