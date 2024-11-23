@@ -24,4 +24,4 @@ I've been making videos on various channels since I was 9 years old.
 - [World Cube Association profile](https://www.worldcubeassociation.org/persons/2016FORT03)
 
 ### Astrophotography
-The universe has captivated my interest since I was a wee lad. 
+My pictures of space thingies: [Astrophotography](/astrophotography.html)
