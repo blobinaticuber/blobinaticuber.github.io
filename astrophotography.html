@@ -22,7 +22,9 @@
     </div>
 
     <div class="gallery">
-        <img id="image" src="/images/2017_eclipse_1.JPEG" width="800"> 
+        <a id="imglink" target="_blank">
+            <img id="image" src="/images/2017_eclipse_1.JPEG" width="800"> 
+        </a>
         <div class="imgdescription">
             <h2 id="date"></h2> 
             <p id="description"></p>
@@ -213,10 +215,12 @@
 </body>
 
 <script>
-    imglist = ["/images/2017_eclipse_1.JPEG", "/images/2017_eclipse_2.JPEG"];
-    datelist = ["2017-Aug-21", "2017-Aug-21"];
+    imglist = ["/images/2017_eclipse_1.JPEG", "/images/2017_eclipse_2.JPEG", "/images/2024_aurora_1.JPEG", "/images/2024_aurora_2.JPEG"];
+    datelist = ["2017-Aug-21", "2017-Aug-21", "2024-05-10", "2024-05-10"];
     desclist = ["Total solar eclipse 2017. Taken from iPhone 5s through eclipse glasses.", 
-            "Total solar eclipse 2017. Venus is visible in between the eclipse and the horizon."];
+            "Total solar eclipse 2017. Venus is visible in between the eclipse and the horizon.",
+            "My first time seeing northern lights! Very nice moon in the image too.",
+            "More northern lights :)"];
     pos = 0;
 
     next();
@@ -225,12 +229,14 @@
     function next() {
         pos == imglist.length-1 ? pos=0 : pos++;
         document.getElementById("image").src = imglist[pos];
+        document.getElementById("imglink").setAttribute('href', imglist[pos]);
         document.getElementById("date").innerHTML = datelist[pos];
         document.getElementById("description").innerHTML = desclist[pos];
     }
     function prev() {
         pos == 0 ? pos=imglist.length-1 : pos--;
         document.getElementById("image").src = imglist[pos];
+        document.getElementById("imglink").setAttribute('href', imglist[pos]);
         document.getElementById("date").innerHTML = datelist[pos];
         document.getElementById("description").innerHTML = desclist[pos];
     }
