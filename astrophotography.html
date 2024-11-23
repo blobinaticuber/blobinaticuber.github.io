@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Astrophotography</title>
+</head>
+
+<body>
+    <div class='stars'></div>
+    <div class='twinkling'></div>
+    <div class='clouds'></div>
+
+    <div class='test'>
+        <form>
+            <button class="button-85" formaction="https://blobinaticuber.github.io/">Back to main page</button>
+        </form>
+
+        <h1>Astrophotography</h1>
+        <p> </p>
+
+    </div>
+
+
+
+<style>
+    /* for the star background */
+
+    .test {
+        margin: 0 auto;
+        padding: 20px;
+        justify-content: space-evenly;
+        display: flex;
+        align-items: center;
+        z-index: 4;
+    }
+
+
+
+    .stars, .twinkling, .clouds {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    }
+
+    .stars {
+    z-index: -3;
+    background: #000 url("https://i.imgur.com/YKY28eT.png") repeat top center;
+    }
+
+    .twinkling {
+    z-index: -2;
+    background: transparent url("https://i.imgur.com/XYMF4ca.png") repeat top center;
+    animation: move-twink-back 200s linear infinite;
+    }
+
+    .clouds {
+    z-index: -1;
+    background: transparent url("https://i.imgur.com/mHbScrQ.png") repeat top center;
+    animation: move-clouds-back 200s linear infinite;
+    }
+
+    @keyframes move-twink-back {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -10000px 5000px;
+    }
+    }
+    @keyframes move-clouds-back {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 10000px 0;
+    }
+    }
+    /* end star background stuff */
+    .button-85 {
+            padding: 0.6em 2em;
+            border: none;
+            outline: none;
+            color: rgb(255, 255, 255);
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+
+        .button-85:before {
+            content: "";
+            background: linear-gradient(45deg,
+                    #ff0000,
+                    #ff7300,
+                    #fffb00,
+                    #48ff00,
+                    #00ffd5,
+                    #002bff,
+                    #7a00ff,
+                    #ff00c8,
+                    #ff0000);
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-button-85 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+        }
+
+        @keyframes glowing-button-85 {
+            0% {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 400% 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        .button-85:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #222;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+        }
+</style>
+
+</body>
+
+
+</html>
