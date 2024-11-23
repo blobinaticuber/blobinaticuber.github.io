@@ -21,10 +21,37 @@
 
     </div>
 
+    <div class="gallery">
+        <img src="\images\2017_eclipse_2.JPEG" width="500"> 
+        <div class="date"><h2>2017</h2></div>
+        <div class="imgdescription"> Description of the image</div>
+    </div>
+
 
 
 <style>
     /* for the star background */
+    /* Thank you to https://codepen.io/NazarAzhar for the space background */
+
+    div.gallery {
+        border: 2px solid white;
+        float: center;
+        width: 500px;
+        margin: auto;
+    }
+    div.gallery img {
+        width: 100%;
+        height: auto;
+        border: 1px solid white;
+    }
+    div.gallery .date {
+        text-align: center;
+    }
+    div.imgdescription {
+        padding: 15px;
+        text-align: center;
+    }
+
 
     .test {
         margin: 0 auto;
@@ -32,7 +59,6 @@
         justify-content: space-evenly;
         display: flex;
         align-items: center;
-        z-index: 4;
     }
 
 
