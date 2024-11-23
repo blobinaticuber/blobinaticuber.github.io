@@ -12,12 +12,12 @@
 
     <div class="title">
         <form>
-        <button class="button-85" formaction="https://blobinaticuber.github.io/">Back to main page</button>
+            <button class="button-85" formaction="https://blobinaticuber.github.io/">Back to main page</button>
         </form>
         <!-- <form action="\index.md">
             <input class="button-85" type="submit" value="Back to main page" />
         </form> -->
-        
+
         <h1>FUNNY CLOCKS</h1>
         <iframe
             src="https://free.timeanddate.com/clock/i9n7c2i7/n1093/szw110/szh110/hoc222/hbw6/cf100/hgr0/hcw2/hcd88/fan2/fas20/fdi70/mqc000/mqs3/mql13/mqw4/mqd94/mhc000/mhs3/mhl13/mhw4/mhd94/mmc000/mml5/mmw1/mmd94/hwm2/hhs2/hhb18/hms2/hml80/hmb18/hmr7/hscf09/hss1/hsl90/hsr5"
@@ -27,16 +27,13 @@
 
 
 
-    <p>This website shows a bunch of clocks in silly formats for fun.</p>
+    <p>This website shows a bunch of clocks in silly formats for fun :p</p>
 
     <p>24 Hour Time: <span id="24hours"></span>:<span id="24min"></span>:<span id="24sec"></span></p>
 
-    <p>12 Hour Time: <span id="12hours"></span>:<span id="12min"></span>:<span id="12sec"></span> <span
-            id="ampm"></span></p>
+    <p>12 Hour Time: <span id="12hours"></span>:<span id="12min"></span>:<span id="12sec"></span> <span id="ampm"></span></p>
 
     <p>Total seconds since midnight: <span id="totalSec"></span></p>
-
-    <p>Metric seconds since midnight: <span id="metricSec"></span></p>
 
     <p>Metric Time: <span id="metHour"></span>:<span id="metMin"></span>:<span id="metSec"></span></p>
 
@@ -151,7 +148,7 @@
         let ImperialMillisecondsFromMidnight = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds;
         document.getElementById("totalSec").innerHTML = parseInt(ImperialMillisecondsFromMidnight / 1000);
         let MetricMillisecondsFromMidnight = ImperialMillisecondsFromMidnight * (100000 / 86400);
-        document.getElementById("metricSec").innerHTML = parseInt(MetricMillisecondsFromMidnight / 1000);
+        // document.getElementById("metricSec").innerHTML = parseInt(MetricMillisecondsFromMidnight / 1000);
 
 
         let metricSecondFromMidnight = Math.trunc(MetricMillisecondsFromMidnight / 1000);
