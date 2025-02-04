@@ -23,5 +23,6 @@ I've been making videos on various channels since I was 9 years old.
 - I'm sponsored by [TheCubicle](https://www.thecubicle.com/)! Use discount code `Rowan` to get 5% off your order.
 - [World Cube Association profile](https://www.worldcubeassociation.org/persons/2016FORT03)
 
-### Astrophotography
-My pictures of space thingies: [Astrophotography](/astrophotography.html)
+### Other things on this website
+- My pictures of space thingies: [Astrophotography](/astrophotography.html)
+- Some graphics test thing using WebGL: [click here](/highd.html)
