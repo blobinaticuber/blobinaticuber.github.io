@@ -22,7 +22,7 @@ var FSHADER_SOURCE =
 function main() {
     // Retrieve <canvas> element
     var canvas = document.getElementById('webgl');
-    canvas.width = window.innerWidth - 100;
+    canvas.width = window.innerHeight - 100;
     canvas.height = window.innerHeight - 100;
 
     // Get the rendering context for WebGL
@@ -45,15 +45,26 @@ function main() {
 }
 
 
-
-
-
-
-
+function proj3Dto2D(v) {
+    return [v[0] / v[2], v[1] / v[2]];
+}
 
 
 function initVertexBuffers(gl) {
-    var vertices = new Float32Array([0, 0.5, -0.5, -0.5, 0.5, -0.5]);
+    // size of things
+    var s = 0.2
+
+    var cube = [[-1 * s, -1 * s, -1 * s], [-1 * s, -1 * s, s], [-1 * s, s, -1 * s], [-1 * s, s, s], [s, -1 * s, -1 * s], [s, -1 * s, s], [s, s, -1 * s], [s, s, s]];
+    var cubeVerts = new Float32Array(16);
+    for (var i = 0; i < 8; i++) {
+        var thing = proj3Dto2D(cube[i]);
+        cubeVerts[2 * i] = thing[0];
+        cubeVerts[2 * i + 1] = thing[1];
+    }
+
+    var triangle3D = [0, 0.5, 0.2, 0.3, 0.2, 0.4, -0.3, -0.2, -0.1];
+    var squareVertices = new Float32Array([s, s, s, -1 * s, -1 * s, -1 * s, -1 * s, s]); // square
+    var vertices = new Float32Array([0, 0.5, -0.5, -0.5, 0.5, -0.5]); // triangle
     var n = 3;
 
     // Create a buffer object
