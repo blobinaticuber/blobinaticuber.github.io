@@ -21,129 +21,140 @@
 
     </div>
 
-    <div class="gallery">
-        <a id="imglink" target="_blank">
-            <img id="image" src="/images/2017_eclipse_1.JPEG" width="800"> 
-        </a>
-        <div class="imgdescription">
-            <h2 id="date"></h2> 
-            <p id="description"></p>
+    <div class="row">
+        <div class="column">
+            <img src="https://i.imgur.com/sBiCFqh.jpeg">
+            <img src="https://i.imgur.com/PaaM7aP.jpeg">
+            <img src="https://i.imgur.com/En55tgW.jpeg">
+            <img src="https://i.imgur.com/yTv1LMS.jpeg">
+        </div>
+
+        <div class="column">
+            <img src="https://i.imgur.com/IV4I36X.jpeg">
+            <img src="https://i.imgur.com/Yz4QvtQ.jpeg">
+            <img src="https://i.imgur.com/VoM2mFv.jpeg">
+            <img src="https://i.imgur.com/FWmEjC7.jpeg">
+        </div>
+
+        <div class="column">
+            <img src="https://i.imgur.com/IVX669t.jpeg">
+            <img src="https://i.imgur.com/RHM4hoW.jpeg">
+            <img src="https://i.imgur.com/JrMCJuN.jpeg">
+            <img src="https://i.imgur.com/Ojsb2CI.jpeg">
         </div>
     </div>
 
-    <div class="button-container">
-        <button onclick="prev()">Previous</button>
-        <button onclick="next()">Next</button>
-    </div>
 
 
 
-<style>
-    /* for the star background */
-    /* Thank you to https://codepen.io/NazarAzhar for the space background */
 
-    div.gallery {
-        border: 2px solid white;
-        float: center;
-        width: 80%;
-        margin: auto;
-        display: flex;
-        align-items: center;
-    }
-    div.gallery img {
-        float: left;
-        width: 500px;
-        height: auto;
-        border: 2px solid white;
-    }
-    div.imgdescription p {
-        padding: 15px;
-        float: center;
-        text-align: center;
-    }
+    <style>
+        /* for the star background */
+        /* Thank you to https://codepen.io/NazarAzhar for the space background */
+        /* responsive flexbox gallery code from https://www.w3schools.com/css/css3_flexbox_responsive.asp */
 
-    div.imgdescription h2 {
-        padding: 15px;
-    }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 4px 4px;
+        }
 
-    .button-container {
-        width: 80%;
-        padding: 20px;
-        float: center;
-        align-items: center;
-        margin: auto;
-        display: flex;
-        justify-content: space-evenly;
-    }
+        /* Create four equal columns that sits next to each other */
+        .column {
+            flex: 25%;
+            max-width: 25%;
+            padding: 4px 40px;
+        }
 
-    .button-container button {
-        padding: 10px;
-        background-color:azure;
-        transition-duration: 0.1s;
-        border: 2px solid white;
-    }
+        .column img {
+            margin-top: 8px;
+            vertical-align: middle;
+            width: 100%;
+        }
 
-    .button-container button:hover {
-        background-color:floralwhite;
-    }
+        /* Responsive layout - makes a two column-layout instead of four columns */
+        @media (max-width: 800px) {
+            .column {
+                flex: 50%;
+                max-width: 50%;
+            }
+        }
 
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media (max-width: 600px) {
+            .column {
+                flex: 100%;
+                max-width: 100%;
+            }
+        }
 
-    .title {
-        margin: 0 auto;
-        padding: 20px;
-        justify-content: space-evenly;
-        display: flex;
-        align-items: center;
-    }
+        div.column img:hover {
+            /* border: 1px solid white; */
+            box-shadow: 3px 3px;
+        }
+
+        .title {
+            margin: 0 auto;
+            padding: 20px;
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+        }
 
 
 
-    .stars, .twinkling, .clouds {
-    position: absolute;
-    display: block;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    }
+        .stars,
+        .twinkling,
+        .clouds {
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 300%;
+        }
 
-    .stars {
-    z-index: -3;
-    background: #000 url("https://i.imgur.com/YKY28eT.png") repeat top center;
-    }
+        .stars {
+            z-index: -3;
+            background: #000 url("https://i.imgur.com/YKY28eT.png") repeat top center;
+        }
 
-    .twinkling {
-    z-index: -2;
-    background: transparent url("https://i.imgur.com/XYMF4ca.png") repeat top center;
-    animation: move-twink-back 200s linear infinite;
-    }
+        .twinkling {
+            z-index: -2;
+            background: transparent url("https://i.imgur.com/XYMF4ca.png") repeat top center;
+            animation: move-twink-back 200s linear infinite;
+        }
 
-    .clouds {
-    z-index: -1;
-    background: transparent url("https://i.imgur.com/mHbScrQ.png") repeat top center;
-    animation: move-clouds-back 200s linear infinite;
-    }
+        .clouds {
+            z-index: -1;
+            background: transparent url("https://i.imgur.com/mHbScrQ.png") repeat top center;
+            animation: move-clouds-back 200s linear infinite;
+        }
 
-    @keyframes move-twink-back {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: -10000px 5000px;
-    }
-    }
-    @keyframes move-clouds-back {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: 10000px 0;
-    }
-    }
-    /* end star background stuff */
-    .button-85 {
+        @keyframes move-twink-back {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -10000px 5000px;
+            }
+        }
+
+        @keyframes move-clouds-back {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 10000px 0;
+            }
+        }
+
+        /* end star background stuff */
+        .button-85 {
             padding: 0.6em 2em;
             border: none;
             outline: none;
@@ -210,37 +221,9 @@
             top: 0;
             border-radius: 10px;
         }
-</style>
+    </style>
 
 </body>
-
-<script>
-    imglist = ["/images/2017_eclipse_1.JPEG", "/images/2017_eclipse_2.JPEG", "/images/2024_aurora_1.JPEG", "/images/2024_aurora_2.JPEG"];
-    datelist = ["2017-Aug-21", "2017-Aug-21", "2024-05-10", "2024-05-10"];
-    desclist = ["Total solar eclipse 2017. Taken from iPhone 5s through eclipse glasses.", 
-            "Total solar eclipse 2017. Venus is visible in between the eclipse and the horizon.",
-            "My first time seeing northern lights! Very nice moon in the image too.",
-            "More northern lights :)"];
-    pos = 0;
-
-    next();
-    prev();
-
-    function next() {
-        pos == imglist.length-1 ? pos=0 : pos++;
-        document.getElementById("image").src = imglist[pos];
-        document.getElementById("imglink").setAttribute('href', imglist[pos]);
-        document.getElementById("date").innerHTML = datelist[pos];
-        document.getElementById("description").innerHTML = desclist[pos];
-    }
-    function prev() {
-        pos == 0 ? pos=imglist.length-1 : pos--;
-        document.getElementById("image").src = imglist[pos];
-        document.getElementById("imglink").setAttribute('href', imglist[pos]);
-        document.getElementById("date").innerHTML = datelist[pos];
-        document.getElementById("description").innerHTML = desclist[pos];
-    }
-</script>
 
 
 </html>
