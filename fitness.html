@@ -3,6 +3,8 @@
 
 <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
     <link rel="stylesheet" href="style.css">
     <title>Rowan Fortier - Fitness</title>
 </head>
@@ -24,34 +26,87 @@
     <h3>Running</h3>
     <a>My first runs were in high school during PE class. At the end of the year all of the freshman had to run a 5k, which I quite enjoyed. In my first year at university, I decided I should join some clubs, and saw that there was a trail running club. I met some great people, learned a lot, and competed in a few races! I stopped running in 2023, but have recently picked it back up. Below are some notable accomplishments:</a>
     <ul>
-        <li>October 3, 2021: <a href="https://ultrasignup.com/results_participant.aspx?fname=Rowan&lname=Fortier&age=18">Bend Bigfoot 10k</a>. My first race, it was an easy trail that was mostly downhill.</li>
-        <li>March 6, 2022: <a href="https://eclecticedgeracing.overallraceresults.com/individual-results/551/373615">Mastondon 10-ish Mile Trail Run</a>.</li>
-        <li>May 21, 2022: Ran a half-marathon in 2h 21m with some friends from the running club (Huge thanks to Danny, Chris, and all).</li>
-        <li>June 22, 2025: Fastest 1 mile time of 7m 21s.</li>
+        <li>October 3, 2021: <a href="https://ultrasignup.com/results_participant.aspx?fname=Rowan&lname=Fortier&age=18">Bend Bigfoot 10k</a>. My first race, it was an easy trail that was mostly downhill. Placed 51/103 with a 54:28.</li>
+        <li>March 6, 2022: <a href="https://eclecticedgeracing.overallraceresults.com/individual-results/551/373615">Mastondon 10-ish Mile Trail Run</a>. Placed 38/81 with a 1:26:28.</li>
+        <li>May 21, 2022: Ran a half-marathon in 2:21:23 with some friends from the running club (Huge thanks to Danny, Chris, and all).</li>
+        <li>June 22, 2025: Fastest 1 mile time of 7:21.</li>
     </ul>
 
     <h3>Weightlifting</h3>
-    <p>Inspired by my friend Lucas, I began hitting the gym in January 2025.</p>
+    <p>Inspired by my friend Lucas, I began hitting the gym in January 2025. My goal is to not look like a twig by building a decent physique. Below are some of my PRs on the classic powerlifting exercises:</p>
 
     <div>
-        <canvas id="myChart"></canvas>
+      <canvas id="weightChart"></canvas>
     </div>
     
+    <p>I discovered calisthenics in March 2025 and set some new goals of being able to do things like handstands, one arm push ups, L-sit, planche, and more. I'm really proud of finally being able to do bodyweight pull ups!</p>
 
 </body>
 
 <script>
-  const ctx = document.getElementById('myChart');
+  const ctx = document.getElementById('weightChart');
+
+  const benchData = {
+    datasets: [
+      {
+      borderColor: '#4287f5',
+      backgroundColor: '#4287f5',
+      label: 'Barbell Bench Press',  
+      data: [
+          {x: '2025-02-02', y: 45},
+          {x: '2025-03-22', y: 55},
+          {x: '2025-04-13', y: 75},
+          {x: '2025-04-24', y: 85},
+          {x: '2025-05-27', y: 90},
+          {x: '2025-06-09', y: 95},
+          {x: '2025-06-23', y: 105},
+        ]},
+      {
+        borderColor: '#fa3e3e',
+        backgroundColor: '#fa3e3e',
+        label: 'Barbell Squat',
+        data: [
+          {x: '2025-01-29', y: 55},
+          {x: '2025-03-19', y: 75},
+          {x: '2025-03-31', y: 85},
+          {x: '2025-04-17', y: 105},
+          {x: '2025-05-18', y: 120},
+          {x: '2025-05-26', y: 140},
+          {x: '2025-06-02', y: 145},
+          {x: '2025-06-12', y: 155},
+          {x: '2025-06-19', y: 175},
+        ]
+      },
+      {
+        borderColor: '#f7c539',
+        backgroundColor: '#f7c539',
+        label: 'Barbell Deadlift',
+        data: [
+          {x: '2025-05-05', y: 95},
+          {x: '2025-05-18', y: 95},
+          {x: '2025-06-02', y: 135},
+        ]
+      }
+    ]
+  }
 
   new Chart(ctx, {
     type: 'line',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: 'Bench Press (lbs)',
-        data: [45, 55, 75, 5, 2, 3],
-        borderWidth: 1
-      }]
-    }
+    data: benchData,
+    options: {
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: 'Weight (lbs)'
+          }
+        },
+        x: {
+          type: 'time',
+          time: {
+            unit: 'month'
+          }
+        }
+    }}
   });
 </script>
