@@ -18,13 +18,16 @@ p {
   border-radius: 50%;
 }
 
-.title {
-  /* width: 100%; */
-  margin: 0 auto;
-  padding: 0px, 10px;
-  /* justify-content: space-evenly; */
+.yt-channel {
+  margin: 10px auto;
+  /* justify-content: flex-start; */
+  /* align-content: start; */
   display: flex;
   /* align-items: center; */
+}
+
+.yt-channel div {
+  padding: 20px;
 }
 
 /* Add a black background color to the top navigation */
@@ -47,12 +50,14 @@ p {
 .topnav a:hover {
   background-color: #ddd;
   color: black;
+  border-radius: 25% 10%;
 }
 
 /* Add a color to the active/current link */
 .topnav a.active {
   background-color: #5404aa;
   color: white;
+  border-radius: 25% 10%;
 }
 
 @media (prefers-color-scheme: dark) {
