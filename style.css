@@ -1,7 +1,9 @@
 body {
   font: 18px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   color: #444;
-  padding-left: 15%;
+  /* padding-left: 15%; */
+  max-width: 1200px;
+  margin: auto;
 }
 
 h1 {
@@ -10,6 +12,19 @@ h1 {
 
 p {
   color: white;
+}
+
+.yt-image {
+  border-radius: 50%;
+}
+
+.title {
+  /* width: 100%; */
+  margin: 0 auto;
+  padding: 0px, 10px;
+  /* justify-content: space-evenly; */
+  display: flex;
+  /* align-items: center; */
 }
 
 /* Add a black background color to the top navigation */
