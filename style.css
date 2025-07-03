@@ -74,3 +74,17 @@ p {
     color: #8e96f0;
   }
 }
+
+@media (prefers-color-scheme: light) {
+  p {
+    color: black;
+  }
+
+  h1 {
+    color: rgb(40, 43, 45);
+  }
+
+  .topnav a {
+    color: #5404aa;
+  }
+}
