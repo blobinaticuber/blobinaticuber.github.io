@@ -60,6 +60,19 @@ p {
   border-radius: 25% 10%;
 }
 
+.nrktbutton {
+  font-size: 20px;
+  margin: 4px;
+}
+
+.redtext {
+  color: red;
+}
+
+.greentext {
+  color: green;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     color: #c9d1d9;
