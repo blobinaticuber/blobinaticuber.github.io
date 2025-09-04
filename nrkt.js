@@ -18,19 +18,27 @@ function deleteInput() {
 }
 
 function start() {
-    while (!areArraysEqual(inputMoves, checkForRepeatedTurns(inputMoves))) {
-        inputMoves = checkForRepeatedTurns(inputMoves);
+    // sanitize the user input to remove duplicate moves, and combine extra turns
+    while (!areArraysEqual(inputMoves, simplifyMoves(inputMoves))) {
+        inputMoves = simplifyMoves(inputMoves);
+    }
+
+    // need another for loop for the first cancel
+    // and a loop that tries this sort of thing multiple times, for 4, 6, 8, etc. cancels
+    for (a = 0, a < inputMoves.length; a++;) {
+        temp = flip(inputMoves, a);
     }
         
     console.log(inputMoves);
 }
 
-function flip(myArray) {
+// returns the whole array with [index to end] flipped
+function flip(myArray, index) {
+    part2 = myArray.slice(index, -1);
+    for (k = 0; k < part2.length; k++) {
+        
+    }
 
-}
-
-function simplifyMoves(arr) {
-    // see if there are 2 U's or R's in a row or stuff
 }
 
 function areArraysEqual(arr1, arr2) {
@@ -38,19 +46,17 @@ function areArraysEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
   }
-
   // Iterate and compare elements
   for (let i = 0; i < arr1.length; i++) {
     if (arr1[i] !== arr2[i]) {
       return false;
     }
   }
-
   // If all checks pass, arrays are equal
   return true;
 }
 
-function checkForRepeatedTurns(a) {
+function simplifyMoves(a) {
     for (i = 0; i < a.length-1; i++) {
         // check all the possible cases for R move repeats
         if (a[i] === "R" && a[i+1] === "R") {
@@ -108,7 +114,6 @@ function checkForRepeatedTurns(a) {
         else if (a[i] === "U2" && a[i+1] === "U2") {
             a.splice(i, 2);
         }
-        
     }
     return a;
 }
