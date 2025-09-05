@@ -11,7 +11,7 @@
 
     <h1>nRKT tool</h1>
 
-    <p>This tool finds {1-4}RKT cancels for 2-gen Rubik's Cube algorithms. Click the buttons below to input moves.</p>
+    <p>This tool finds {1-4}RKT cancels for 2-gen Rubik's Cube algorithms. 4flip means to do the rotation that looks like it swaps the R and U layers of all layers along the 4th axis besides the one that you're doing RKT on. On 3^4, this can be notated as <code>{1..2}OUR</code>.</p>
 
     <h2 id="moves">Click the buttons below to input moves.</h2>
 
@@ -32,11 +32,15 @@
         <button onclick="addInput('U2')"class="nrktbutton" type="button"><b>U2</b></button>
     </div>
 
-    <div>
+    <div id="start">
         <button onclick="start()" class="nrktbutton greentext" type="button"><b>START</b></button>
     </div>
 
-    <label for="file">Progress:</label>
-    <progress id="file" value="32" max="100"> 32% </progress>
+    <div id="end">
+
+    </div>
+
+    <!-- <label for="file">Progress:</label>
+    <progress id="file" value="32" max="100"> 32% </progress> -->
 
 </body>
