@@ -115,3 +115,21 @@ p {
     color: #5404aa;
   }
 }
+
+
+.home-linksquare{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 50px;
+  /* background-color: green; */
+}
+
+.home-linksquare-box{
+  background-color: #230e56;
+  text-align: center;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 25px;
+  padding: 10px;
+}
