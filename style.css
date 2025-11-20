@@ -153,6 +153,8 @@ p {
 
 
 #stars {
+  z-index: -1;
+  position: relative;
   width: 5px;
   height: 5px;
   background: transparent;
@@ -160,6 +162,8 @@ p {
 }
 
 #stars2 {
+  z-index: -1;
+  position: relative;
   width: 2px;
   height: 2px;
   background: transparent;
@@ -167,6 +171,8 @@ p {
 }
 
 #stars3 {
+  z-index: -1;
+  position: relative;
   width: 1px;
   height: 1px;
   background: transparent;
