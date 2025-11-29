@@ -21,6 +21,13 @@ body {
   border-radius: 50px;
 }
 
+.project-box svg {
+  width: 200px;
+  height: 200px;
+  padding: 20px;
+  border-radius: 50px;
+}
+
 .project-box:hover {
   transition: 0.3s;
   animation: auroraBorder 10s ease-in-out alternate infinite;
@@ -40,6 +47,14 @@ body {
 
 .gradient-stellamagnus {
   background: linear-gradient(#23465c 0%, #090a0f 100%);
+}
+
+.gradient-yt {
+  background: linear-gradient(#5c2323 0%, #090a0f 100%);
+}
+
+.gradient-cubing {
+  background: linear-gradient(#122964 0%, #090a0f 100%);
 }
 
 /* aurora animations */
