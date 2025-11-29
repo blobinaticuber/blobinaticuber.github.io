@@ -8,6 +8,44 @@ body {
   /* padding: 10px; */
 }
 
+.no-link-underline {
+  text-decoration: none;
+}
+
+.project-box {
+  display: flex;
+  border-radius: 25px;
+  /* animation: auroraBorder 10s ease-in-out alternate infinite; */
+}
+
+.project-box img {
+  width: 200px;
+  height: 200px;
+  padding: 20px;
+  border-radius: 50px;
+}
+
+.project-box:hover {
+  transition: 0.3s;
+  animation: auroraBorder 10s ease-in-out alternate infinite;
+}
+
+.project-box-container {
+  padding: 10px;
+}
+
+.gradient-hypercubing {
+  background: linear-gradient(#2d1b35 0%, #090a0f 100%);
+}
+
+.gradient-333sim {
+  background: linear-gradient(#4b4b4b 0%, #090a0f 100%);
+}
+
+.gradient-stellamagnus {
+  background: linear-gradient(#23465c 0%, #090a0f 100%);
+}
+
 /* aurora animations */
 @keyframes auroraBorder {
   0% {box-shadow: 0px -5px 15px rgba(128, 0, 94, 0.8), 0px 4px 15px rgba(32, 220, 241, 0.8);}
