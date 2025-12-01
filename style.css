@@ -5,6 +5,28 @@ body {
   margin: auto;
 }
 
+li {
+  color: white;
+}
+
+h1 {
+  color: #c9d1d9;
+  animation: auroraText 10s ease-in-out alternate infinite;
+  font-size: 4.5rem;
+}
+
+p {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
 a:link {
   color: #58a6ff;
 }
@@ -20,6 +42,13 @@ a:visited {
 .project-box {
   display: flex;
   border-radius: 25px;
+  transition: 0.3s;
+}
+
+.project-box:hover {
+  translate: 0em 0.25em;
+  transition: 0.3s;
+  animation: auroraBorder 10s ease-in-out alternate infinite;
 }
 
 .project-box img {
@@ -34,11 +63,6 @@ a:visited {
   height: 150px;
   padding: 20px;
   border-radius: 50px;
-}
-
-.project-box:hover {
-  transition: 0.3s;
-  animation: auroraBorder 10s ease-in-out alternate infinite;
 }
 
 .project-box-container {
@@ -89,16 +113,6 @@ a:visited {
   overflow: hidden;
   height: 100vh;
   background-repeat: repeat;
-}
-
-h1 {
-  color: #c9d1d9;
-  animation: auroraText 10s ease-in-out alternate infinite;
-  font-size: 4.5rem;
-}
-
-p {
-  color: white;
 }
 
 .yt-image {
