@@ -189,16 +189,17 @@ p {
 }
 
 @media (prefers-color-scheme: light) {
-  p {
-    color: black;
+ body {
+    color: #c9d1d9;
+    background: #0d1117;
   }
 
-  h1 {
-    color: rgb(40, 43, 45);
+  a:link {
+    color: #58a6ff;
   }
 
-  .topnav a {
-    color: #5404aa;
+  a:visited {
+    color: #8e96f0;
   }
 }
 
