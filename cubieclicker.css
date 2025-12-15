@@ -69,10 +69,9 @@ h1 {
   font-size: 2.5rem;
 }
 
-
-
-h2 {
-  color: white;
+button {
+    padding: 15px 32px;
+    font-size: large;
 }
 
 #stickers {

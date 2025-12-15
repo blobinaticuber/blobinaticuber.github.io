@@ -48,3 +48,9 @@ setInterval(updateStickers, 33);
 
 
 // CODE FOR THE GAME LOGIC
+
+function startGame() {
+    console.log("start");
+    document.getElementById("intro-text").remove();
+    document.getElementById("start-game-btn").remove();
+}
