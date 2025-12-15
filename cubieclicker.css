@@ -1,0 +1,75 @@
+body {
+  font: 18px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  margin: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #0d1117;
+    }
+
+    h1 {
+        color: white;
+    }
+
+    .frosted {
+        background: rgba(0, 0, 0, 0.09);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background: #ffffff;
+    }
+
+    h1 {
+        color: black;
+    }
+
+    .frosted {
+        background: rgba(255, 255, 255, 0.09);
+    }
+}
+
+.subbody {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.frosted {
+    /* From https://css.glass */
+    background: rgba(0, 0, 0, 0.09);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.8px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+
+h1 {
+  font-size: 4.5rem;
+}
+
+p {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+#stickers {
+  z-index: -1;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  /* animation: animStar 150s linear infinite; */
+  border-radius: 10%;
+}
+
+@keyframes animStar {
+  100% {
+    transform: translate3d(0, 0, 1px) rotate(360deg);
+  }
+}
