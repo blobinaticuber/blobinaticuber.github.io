@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Rowan Fortier - nRKT</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <script src="assets/animcube/AnimCube3.js"></script>
 </head>
 
 <body>
@@ -28,7 +29,9 @@
 
     <h1>nRKT tool</h1>
 
-    <p>This tool finds {1-4}RKT cancels for 2-gen Rubik's Cube algorithms. 4flip means to do the rotation that looks like it swaps the R and U layers of all layers along the 4th axis besides the one that you're doing RKT on. On 3^4, this can be notated as <code>{1..2}OUR</code>.</p>
+    <p>RKT is a technique for higher-dimensional Rubik's Cubes that abuses symmetry to you treat a side as if it were a lower-dimensional puzzle. To learn more, see the <a href="https://hypercubing.xyz/techniques/rkt/">hypercubing.xyz</a> wiki page about RKT.</p>
+
+    <p>This tool specifially finds RKT cancels for 2-gen <code>&ltR,U&gt</code> Rubik's Cube algorithms. {n}flip means to do the rotation that looks like it swaps the R and U layers of all layers along the nth axis besides the one that you're doing RKT on. On 3<sup>4</sup>, this can be notated as <code>{1..2}OUR</code>.</p>
 
     <h2 id="moves">Click the buttons below to input moves.</h2>
 
@@ -51,5 +54,9 @@
     <div id="end">
 
     </div>
+
+    <!-- <div style="width:200px; height:200px; border: 5px solid white;">
+        <script>AnimCube3("config=assets/animcube/AnimCube3.txt")</script>
+    </div> -->
 
 </body>
