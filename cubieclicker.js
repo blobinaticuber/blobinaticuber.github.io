@@ -1,5 +1,12 @@
+import { getScrambles, genImages, setSeed, getSeed } from 'https://esm.sh/cubicdb-module';
+
+
+
 // -------------------------------------------------------------------------------------------
 // CODE FOR THE BACKGROUND EFFECT SET UP
+
+
+
 const stickers1 = document.getElementById("stickers");
 
 const cubeColours = ["#f1f1f1ff", "#ffff00", "#FF0000", "#00FF00", "#0000FF", "#FFA500"];
@@ -52,13 +59,16 @@ setInterval(updateStickers, 33);
 // -------------------------------------------------------------------------------------------
 // CODE FOR THE GAME LOGIC
 
-var totalCubes = 43252003274489856000n;
+
+
+const totalCubes = 43252003274489856000n;
 var cubesSolved = 0n;
 
-// called when the user clicks start game
+const btn = document.getElementById('start-game-btn');
+btn.addEventListener('click', startGame);
+
 function startGame() {
     document.getElementById("intro-text").remove();
-    document.getElementById("start-game-btn").remove();
 
     var subbody = document.getElementById("subbody");
     subbody.appendChild(cubeCountDisplay());
@@ -79,9 +89,8 @@ function cubeCountDisplay() {
     var num = document.createElement("h1");
     num.id = "cubeCount";
     num.innerText = (`${bigIntFormat(cubesSolved)}`);
-    // updateCubeCount();
     var text = document.createElement("p");
-    text.innerText = `/ ${bigIntFormat(totalCubes)}`;
+    text.innerText = `/ ${bigIntFormat(totalCubes)} Rubik's Cubes solved`;
     d.appendChild(num);
     d.appendChild(text);
     return d;
@@ -95,13 +104,30 @@ function updateCubeCount() {
 function cubeButton() {
     var d = document.createElement("div");
     d.classList = "flexbox center frosted";
-    var btn = document.createElement("button");
-    btn.onclick = cubeClicked;
-    d.appendChild(btn);
+    var cubeimg = document.createElement("div");
+    cubeimg.id = "cubeimg";
+    cubeimg.onclick = cubeClicked;
+    cubeimg.onclick = cubeClicked;
+    cubeimg.appendChild(newScrambled333Image());
+    d.appendChild(cubeimg);
     return d;
 }
+
+function newScrambled333Image() {
+    var scrambles = getScrambles([
+        { scrambler: "333", image: true},
+    ]);
+    var svgString = scrambles[0].image;
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+    const svgElement = svgDoc.documentElement;
+    return svgElement;
+}
+
 
 function cubeClicked() {
     cubesSolved = cubesSolved + 1n;
     updateCubeCount();
+    document.getElementById("cubeimg").replaceChildren();
+    document.getElementById("cubeimg").appendChild(newScrambled333Image());
 }
