@@ -72,7 +72,37 @@ function startGame() {
 
     var subbody = document.getElementById("subbody");
     subbody.appendChild(cubeCountDisplay());
+    // subbody.appendChild(cubeButton());
+    subbody.appendChild(magicPackage());
+}
+
+function magicPackage() {
+    var d = document.createElement("div");
+    d.id = "magicPackage";
+    d.classList = "flexbox center frosted";
+    var boximg = document.createElement("img");
+    boximg.id = "boximg";
+    boximg.onclick = magicPackageClicked;
+    boximg.src = "images/cubieclicker/magicpackage.png";
+    d.appendChild(boximg);
+    return d;
+}
+
+function magicPackageClicked() {
+    // remove magic package and show cube
+    var subbody = document.getElementById("subbody");
+    var pkg = document.getElementById("magicPackage");
+    subbody.removeChild(pkg);
     subbody.appendChild(cubeButton());
+    // don't let them click the cube yet because they don't know how to solve it
+    // show the inventory of the package
+}
+
+function packageInventory() {
+    var d = document.createElement("div");
+    d.classList = "flexbox center frosted";
+    var title = document.createElement("h1");
+    title.innerText = ("Contents of Magical package");
 }
 
 // convert bigInt into readable number with commas
@@ -106,7 +136,6 @@ function cubeButton() {
     d.classList = "flexbox center frosted";
     var cubeimg = document.createElement("div");
     cubeimg.id = "cubeimg";
-    cubeimg.onclick = cubeClicked;
     cubeimg.onclick = cubeClicked;
     cubeimg.appendChild(newScrambled333Image());
     d.appendChild(cubeimg);
