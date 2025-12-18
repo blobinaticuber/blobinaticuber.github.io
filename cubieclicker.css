@@ -49,9 +49,18 @@ body {
     }
 }
 
-.subbody {
+#subbody {
     max-width: 1000px;
     margin: auto;
+}
+
+.flexbox {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+    gap: 20px;
 }
 
 .frosted {
