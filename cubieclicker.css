@@ -69,6 +69,11 @@ body {
     gap: 20px;
 }
 
+.space-between {
+    justify-content: space-between;
+    gap: 20px;
+}
+
 .frosted {
     padding: 15px;
     /* From https://css.glass */

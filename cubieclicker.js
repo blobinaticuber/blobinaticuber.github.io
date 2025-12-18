@@ -65,6 +65,14 @@ function pTag(str) {
     return text;
 }
 
+function pCodeTag(str) {
+    var p = document.createElement("p");
+    var c = document.createElement("code");
+    c.innerText = str;
+    p.appendChild(c);
+    return p;
+}
+
 function h1Tag(str) {
     var text = document.createElement("h1");
     text.innerText = str;
@@ -99,8 +107,29 @@ function startGame() {
     document.getElementById("intro-text").remove();
 
     var subbody = document.getElementById("subbody");
+
+
+    subbody.appendChild(titleAndButtons());
     subbody.appendChild(cubeCountDisplay());
     subbody.appendChild(magicPackage());
+}
+
+function titleAndButtons() {
+    var d3 = divClasses("flexbox space-between");
+    var left = divClasses("flexbox center");
+    left.appendChild(h1Tag("Cubie Clicker"));
+    left.appendChild(pCodeTag("v0.0.2"));
+    d3.appendChild(left);
+
+    var right = divClasses("flexbox center");
+    var d4 = divClasses("flexbox frosted");
+    d4.appendChild(pTag("Settings"));
+    right.appendChild(d4);
+    var d5 = divClasses("flexbox frosted");
+    d5.appendChild(pTag("About"));
+    right.appendChild(d5);
+    d3.appendChild(right);
+    return d3;
 }
 
 function magicPackage() {
