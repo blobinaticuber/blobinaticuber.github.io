@@ -1,0 +1,3 @@
+buttonbar=0
+scale=3
+bgcolor=0d1117
