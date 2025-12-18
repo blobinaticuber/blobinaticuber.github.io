@@ -55,15 +55,9 @@ body {
 }
 
 #cubeimg {
-    transition: 0.1s;
     width: 400px;
     height: 300px;
 }
-
-/* #cubeimg:hover {
-    transition: 0.1s;
-    box-shadow: 0 4px 30px rgb(183, 50, 50);
-} */
 
 .flexbox {
     display: flex;
@@ -84,6 +78,7 @@ body {
     backdrop-filter: blur(6.8px);
     -webkit-backdrop-filter: blur(6.8px);
     border: 1px solid rgba(255, 255, 255, 1);
+    margin: 15px;
 }
 
 h1 {
