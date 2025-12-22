@@ -227,7 +227,8 @@ function formatCost(cost) {
 function cubing101Clicked() {
     if (SP >= BigInt(50)) {
         solveTime *= 0.9;
-        document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${solveTime}s`;
+
+        document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${Math.trunc(solveTime * 10) / 10}s`;
         SP = SP - 50n;
 
         var spc = document.getElementById("spCount");
