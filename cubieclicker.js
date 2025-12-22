@@ -98,6 +98,8 @@ var cubellaUnlocked = false;
 const totalCubes = 43252003274489856000n;
 var cubesSolved = 0n;
 
+var SP = 0n;
+
 // time in seconds it takes to solve a cube
 var solveTime = 45;
 
@@ -199,16 +201,59 @@ function CubeCreatureClicked() {
     r.appendChild(cubella());
 }
 
-// makes cubella UI on the right
+// makes cubella store UI on the right
 function cubella() {
-    var d3 = divClasses("frosted");
-    d3.appendChild(pTag("Cubella - Level 1"));
+    var d = divClasses("frosted");
+    d.appendChild(pTag("Cubella - Level 1"));
+
+    var d2 = divClasses("flexbox center");
+
     var cubellaImg = document.createElement("img");
     cubellaImg.src = "images/cubieclicker/cubella_0.png";
     cubellaImg.width = 200;
     cubellaImg.height = 200;
-    d3.appendChild(cubellaImg);
-    return d3;
+    d2.appendChild(cubellaImg);
+    d2.appendChild(pTag("I am Cubella! My magical powers will increase based on how many cubes you have solved! I have a few ideas to speed up the process:"));
+    d.appendChild(d2);
+    d.appendChild(addCubellaItem("Cubing 101: Tips & Tricks", "Speeds up solve time by 10%", "images/cubieclicker/instructions.png", [50, 0], cubing101Clicked));
+    return d;
+}
+
+function formatCost(cost) {
+    var c = (cost[1] == 0) ? "" : ` & scrambles ${cost[1]} cubes`;
+    return `Cost: ${cost[0]} SP${c}`;
+}
+
+function cubing101Clicked() {
+    if (SP >= BigInt(50)) {
+        solveTime *= 0.9;
+        document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${solveTime}s`;
+        SP = SP - 50n;
+
+        var spc = document.getElementById("spCount");
+        spc.innerText = `Sticker Points (SP): ${bigIntFormat(SP)}`;
+    }
+}
+
+function addCubellaItem(name, desc, src, cost, func) {
+    var d = divClasses("frosted");
+    d.appendChild(pTag(name));
+
+    var d2 = divClasses("flexbox");
+
+    var i = document.createElement("img");
+    i.src = src;
+    i.width = 100;
+    i.height = 100;
+    i.onclick = func;
+    d2.appendChild(i);
+
+    var d3 = divClasses();
+    d3.appendChild(pTag(desc));
+    d3.appendChild(pTag(formatCost(cost)));
+    d2.appendChild(d3);
+    d.appendChild(d2);
+    return d;
 }
 
 function packageInventory() {
@@ -257,25 +302,34 @@ function cubeCountDisplay() {
     d2.appendChild(num);
     d2.appendChild(pTag(`/ ${bigIntFormat(totalCubes)}`));
     d.appendChild(d2);
+
+    var spc = pTag(`Sticker Points (SP): ${bigIntFormat(SP)}`);
+    spc.id="spCount";
+    d.appendChild(spc);
     return d;
 }
 
 function updateCubeCount() {
     var v = document.getElementById("cubeCount");
     v.innerText = (`${bigIntFormat(cubesSolved)}`);
+    var s = document.getElementById("spCount");
+    s.innerText = `Sticker Points (SP): ${bigIntFormat(SP)}`;
 }
 
 function cubeButton() {
     var d = divClasses("center frosted");
 
     var timerdiv = document.createElement("div");
-    timerdiv.style = "width:100%; height:24px; border-radius: 25px; border: 2px solid white;";
+    timerdiv.id = "timerDiv";
     var timerprogress = document.createElement("div");
     timerprogress.id = "timerBar";
-    timerprogress.style = "width:0%; height:24px; background-color: #1c9124ff; border-radius: 25px;";
 
     timerdiv.appendChild(timerprogress);
     d.appendChild(timerdiv);
+
+    var st = pTag(`Solve time: ${solveTime}s`);
+    st.id = "solveTimeDisplay"
+    d.appendChild(st);
 
     var cubeimg = document.createElement("div");
     cubeimg.id = "cubeimg";
@@ -301,11 +355,17 @@ function update333Image() {
     document.getElementById("cubeimg").appendChild(newScrambled333Image());
 }
 
+function addSP() {
+    SP = SP + BigInt(Math.trunc(Math.random()*54));
+}
+
 
 function cubeClicked() {
     if (canSolve) {
         // disable clicking on the cube during a solve
         document.getElementById("cubeimg").onclick = null;
+
+        const s = solveTime;
 
         var tb = document.getElementById("timerBar");
         var w = 0;
@@ -313,19 +373,17 @@ function cubeClicked() {
         // call this every 10 milliseconds (0.01) seconds
         function frame() {
             if (w >= 100) {
-            clearInterval(id);
-            cubesSolved = cubesSolved + 1n;
-            updateCubeCount();
-            update333Image();
-            document.getElementById("cubeimg").onclick = cubeClicked;
-            tb.style.width = 0 + '%';
+                clearInterval(id);
+                cubesSolved = cubesSolved + 1n;
+                addSP();
+                updateCubeCount();
+                update333Image();
+                document.getElementById("cubeimg").onclick = cubeClicked;
+                tb.style.width = 0 + '%';
             } else {
-            w += 1/solveTime/60*100;
-            tb.style.width = w + '%';
+                w += 1/s/60*100;
+                tb.style.width = w + '%';
             }
         }
-
-
-
     }
 }

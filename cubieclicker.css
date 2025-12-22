@@ -24,6 +24,10 @@ body {
         transition: 0.1s;
         background: rgba(0, 0, 0, 0.49);
     }
+
+    #timerDiv {
+        border: 2px solid white;
+    }
 }
 
 @media (prefers-color-scheme: light) {
@@ -45,7 +49,11 @@ body {
     }
     .frosted {
         transition: 0.1s;
-        background: rgba(255, 255, 255, 0.09);
+        background: rgba(255, 255, 255, 0.49);
+    }
+
+    #timerDiv {
+        border: 2px solid black;
     }
 }
 
@@ -102,6 +110,19 @@ h1 {
 button {
     padding: 15px 32px;
     font-size: large;
+}
+
+#timerDiv {
+    width:100%;
+    height:24px;
+    border-radius: 25px;
+}
+
+#timerBar {
+    width:0%;
+    height:24px;
+    background-color: #1c9124ff;
+    border-radius: 25px;
 }
 
 #stickers {
