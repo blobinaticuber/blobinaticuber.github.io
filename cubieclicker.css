@@ -39,19 +39,28 @@ body {
         color: black;
     }
 
-    .frosted {
-        transition: 0.1s;
-        background: rgba(255, 255, 255, 0.49);
-    }
     .frosted:hover {
+        transition: 0.1s;
+        background: rgba(255, 255, 255, 0.09);
+    }
+    .frosted {
         transition: 0.1s;
         background: rgba(255, 255, 255, 0.09);
     }
 }
 
 #subbody {
-    max-width: 1000px;
-    margin: auto;
+    width: 33%;
+    /* margin: auto; */
+}
+
+#leftsubbody {
+    width: 33%;
+    /* margin: auto; */
+}
+
+#rightsubbody {
+    width: 33%;
 }
 
 #cubeimg {
