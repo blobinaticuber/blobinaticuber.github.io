@@ -92,18 +92,37 @@ function divClasses(cl) {
 
 
 
-var cubellaUnlocked = false;
-
 
 const totalCubes = 43252003274489856000n;
 var cubesSolved = 0n;
 
-var SP = 0n;
-
 // time in seconds it takes to solve a cube
-var solveTime = 45;
+var solveTime = 5;
 
-var canSolve = false;
+
+
+// name, desc, src, cost, func, id
+const cubella_cubingGuide = {
+    title: "Expert Cubing Guide",
+    desc: "Speeds up solve time by 5%",
+    imgsrc: "images/cubieclicker/instructions.png",
+    divID: "cubing101",
+    func: cubing101Clicked,
+    cost: 2,
+    maxUses: 8
+};
+
+const cubella_friend = {
+    title: "Hire a friend",
+    desc: "You teach your friend to solve just as fast as you",
+    imgsrc: "images/cubieclicker/friend.png",
+    divID: "friend",
+    func: null,
+    cost: 10,
+    maxUses: 10
+};
+
+var cubellaUpgrades = [cubella_cubingGuide, cubella_friend];
 
 const btn = document.getElementById('start-game-btn');
 btn.addEventListener('click', startGame);
@@ -112,9 +131,6 @@ function startGame() {
     document.getElementById("intro-text").remove();
 
     var subbody = document.getElementById("subbody");
-
-
-    // subbody.appendChild(titleAndButtons());
     subbody.appendChild(cubeCountDisplay());
     subbody.appendChild(magicPackage());
 }
@@ -154,51 +170,16 @@ function magicPackage() {
 }
 
 function magicPackageClicked() {
-    // remove magic package and show cube
+    // remove magic package and show cube and cubella
     var subbody = document.getElementById("subbody");
     var pkg = document.getElementById("magicPackage");
     subbody.removeChild(pkg);
-    // subbody.appendChild(cubeButton());
-    // don't let them click the cube yet because they don't know how to solve it
-    // show the inventory of the package
-    subbody.appendChild(packageInventory());
-}
 
-function instructionManual() {
-    var d3 = divClasses("frosted");
-    d3.appendChild(pTag("Instruction manual"));
-    d3.id = "instructionManualContainer";
-    var instructionManualImg = document.createElement("img");
-    instructionManualImg.onclick = instructionManualClicked;
-    instructionManualImg.src = "images/cubieclicker/instructions.png";
-    d3.appendChild(instructionManualImg);
-    d3.appendChild(pTag("- Teaches you how to solve"));
-    return d3;
-}
-
-function CubeCreature() {
-    var d3 = divClasses("frosted");
-    d3.appendChild(pTag("Strange Creature"));
-    d3.id = "cubeCreatureContainer";
-    var cubellaImg = document.createElement("img");
-    cubellaImg.onclick = CubeCreatureClicked;
-    cubellaImg.src = "images/cubieclicker/cubella_0.png";
-    cubellaImg.width = 200;
-    cubellaImg.height = 200;
-    d3.appendChild(cubellaImg);
-    d3.appendChild(pTag("- ???????????????????"));
-    return d3;
-}
-
-function CubeCreatureClicked() {
-    cubellaUnlocked = true;
-    document.getElementById("cubeCreatureContainer").remove();
-    if (canSolve) {
-        document.getElementById("packageInventory").remove();
-    }
+    document.getElementById("cubeCounter").after(cubeButton());
 
     var r = document.getElementById("rightsubbody");
     r.appendChild(cubella());
+    updateCubellaItemState();
 }
 
 // makes cubella store UI on the right
@@ -215,30 +196,33 @@ function cubella() {
     d2.appendChild(cubellaImg);
     d2.appendChild(pTag("I am Cubella! My magical powers will increase based on how many cubes you have solved! I have a few ideas to speed up the process:"));
     d.appendChild(d2);
-    d.appendChild(addCubellaItem("Cubing 101: Tips & Tricks", "Speeds up solve time by 10%", "images/cubieclicker/instructions.png", [50, 0], cubing101Clicked));
+
+    // adds each cubella upgrade to the div
+    for (var i = 0; i < cubellaUpgrades.length; i++) {
+        d.appendChild(addCubellaItem(cubellaUpgrades[i].title, cubellaUpgrades[i].desc, cubellaUpgrades[i].imgsrc, cubellaUpgrades[i].cost, cubellaUpgrades[i].func, cubellaUpgrades[i].divID));
+    }
+
     return d;
 }
 
 function formatCost(cost) {
-    var c = (cost[1] == 0) ? "" : ` & scrambles ${cost[1]} cubes`;
-    return `Cost: ${cost[0]} SP${c}`;
+    return (cost > 1 ? `Cost: scrambles ${cost} cubes` : `Cost: scrambles ${cost} cube`);
 }
 
 function cubing101Clicked() {
-    if (SP >= BigInt(50)) {
-        solveTime *= 0.9;
+    if (cubesSolved >= BigInt(2)) {
+        solveTime *= 0.95;
 
         document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${Math.trunc(solveTime * 10) / 10}s`;
-        SP = SP - 50n;
-
-        var spc = document.getElementById("spCount");
-        spc.innerText = `Sticker Points (SP): ${bigIntFormat(SP)}`;
+        cubesSolved = cubesSolved - 2n;
+        updateCubeCount();
     }
 }
 
-function addCubellaItem(name, desc, src, cost, func) {
+function addCubellaItem(name, desc, src, cost, func, id) {
     var d = divClasses("frosted");
     d.appendChild(pTag(name));
+    d.id = id;
 
     var d2 = divClasses("flexbox");
 
@@ -246,7 +230,7 @@ function addCubellaItem(name, desc, src, cost, func) {
     i.src = src;
     i.width = 100;
     i.height = 100;
-    i.onclick = func;
+    d.onclick = func;
     d2.appendChild(i);
 
     var d3 = divClasses();
@@ -255,32 +239,6 @@ function addCubellaItem(name, desc, src, cost, func) {
     d2.appendChild(d3);
     d.appendChild(d2);
     return d;
-}
-
-function packageInventory() {
-    var d = divClasses("frosted");
-    d.id = "packageInventory";
-    d.appendChild(pTag("Contents of Magical package"));
-
-    var d2 = divClasses("flexbox center");
-    d2.appendChild(instructionManual());
-    d2.appendChild(CubeCreature());
-
-    d.appendChild(d2);
-    return d;
-}
-
-function instructionManualClicked() {
-    // remove manual from package contents
-    document.getElementById("instructionManualContainer").remove();
-    // show the rubik's cube clicker button
-    document.getElementById("cubeCounter").after(cubeButton());
-    // remove block on solve
-    canSolve = true;
-
-    if (cubellaUnlocked) {
-        document.getElementById("packageInventory").remove();
-    }
 }
 
 // convert bigInt into readable number with commas
@@ -303,18 +261,29 @@ function cubeCountDisplay() {
     d2.appendChild(num);
     d2.appendChild(pTag(`/ ${bigIntFormat(totalCubes)}`));
     d.appendChild(d2);
-
-    var spc = pTag(`Sticker Points (SP): ${bigIntFormat(SP)}`);
-    spc.id="spCount";
-    d.appendChild(spc);
     return d;
+}
+
+function updateCubellaItemState() {
+    // update the cubella upgrade divs
+    for (var i = 0; i < cubellaUpgrades.length; i++) {
+        if (cubesSolved >= cubellaUpgrades[i].cost) {
+            document.getElementById(cubellaUpgrades[i].divID).classList.remove("tooexpensive");
+            document.getElementById(cubellaUpgrades[i].divID).classList.add("canbuy");
+        } else {
+            document.getElementById(cubellaUpgrades[i].divID).classList.remove("canbuy");
+            document.getElementById(cubellaUpgrades[i].divID).classList.add("tooexpensive");
+        }
+    }
+
 }
 
 function updateCubeCount() {
     var v = document.getElementById("cubeCount");
     v.innerText = (`${bigIntFormat(cubesSolved)}`);
-    var s = document.getElementById("spCount");
-    s.innerText = `Sticker Points (SP): ${bigIntFormat(SP)}`;
+
+    updateCubellaItemState();
+
 }
 
 function cubeButton() {
@@ -356,35 +325,28 @@ function update333Image() {
     document.getElementById("cubeimg").appendChild(newScrambled333Image());
 }
 
-function addSP() {
-    SP = SP + BigInt(Math.trunc(Math.random()*54));
-}
-
 
 function cubeClicked() {
-    if (canSolve) {
-        // disable clicking on the cube during a solve
-        document.getElementById("cubeimg").onclick = null;
+    // disable clicking on the cube during a solve
+    document.getElementById("cubeimg").onclick = null;
 
-        const s = solveTime;
+    const s = solveTime;
 
-        var tb = document.getElementById("timerBar");
-        var w = 0;
-        var id = setInterval(frame, 10);
-        // call this every 10 milliseconds (0.01) seconds
-        function frame() {
-            if (w >= 100) {
-                clearInterval(id);
-                cubesSolved = cubesSolved + 1n;
-                addSP();
-                updateCubeCount();
-                update333Image();
-                document.getElementById("cubeimg").onclick = cubeClicked;
-                tb.style.width = 0 + '%';
-            } else {
-                w += 1/s/60*100;
-                tb.style.width = w + '%';
-            }
+    var tb = document.getElementById("timerBar");
+    var w = 0;
+    var id = setInterval(frame, 10);
+    // call this every 10 milliseconds (0.01) seconds
+    function frame() {
+        if (w >= 100) {
+            clearInterval(id);
+            cubesSolved = cubesSolved + 1n;
+            updateCubeCount();
+            update333Image();
+            document.getElementById("cubeimg").onclick = cubeClicked;
+            tb.style.width = 0 + '%';
+        } else {
+            w += 1/s/60*100;
+            tb.style.width = w + '%';
         }
     }
 }

@@ -103,6 +103,16 @@ body {
     margin: 15px;
 }
 
+.tooexpensive {
+    border-radius: 16px;
+    border: 1px solid rgb(255, 0, 0);
+}
+
+.canbuy {
+    border-radius: 16px;
+    border: 1px solid rgb(0, 255, 0);
+}
+
 h1 {
   font-size: 2.5rem;
 }
