@@ -253,10 +253,10 @@ function updateFriendAutomation() {
 }
 
 function addCubesFromFriends() {
-    cubesSolved = cubesSolved + BigInt(numFriends);
+    cubesSolved = cubesSolved + BigInt(1);
     updateCubeCount();
     update333Image();
-    setTimeout(addCubesFromFriends, solveTime/numFriends*1000);
+    setTimeout(addCubesFromFriends, solveTime*1000/numFriends);
 }
 
 function addCubellaItem(name, desc, src, cost, func, id) {
