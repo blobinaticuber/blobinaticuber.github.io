@@ -97,9 +97,11 @@ const totalCubes = 43252003274489856000n;
 var cubesSolved = 0n;
 
 // time in seconds it takes to solve a cube
-var solveTime = 5;
+var solveTime = 2;
 
 var numFriends = 0;
+
+var cps = 0;
 
 
 
@@ -163,7 +165,8 @@ function magicPackageClicked() {
 
     var r = document.getElementById("rightsubbody");
     r.appendChild(cubella());
-    updateCubellaItemState();
+
+    requestAnimationFrame(gameLoop);
 }
 
 // makes cubella store UI on the right
@@ -198,8 +201,10 @@ function cubing101Clicked() {
         solveTime *= 0.95;
 
         document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${Math.trunc(solveTime * 10) / 10}s`;
-        cubesSolved = cubesSolved - 2n;
-        updateCubeCount();
+        cubesSolved = cubesSolved - BigInt(cubellaUpgrades[0].cost);
+        // updateCubeCount();
+
+        cubellaUpgrades[0].cost = Math.trunc(cubellaUpgrades[0].cost*1.5);
     }
 }
 
@@ -211,11 +216,15 @@ function hireFriendClicked() {
             l.appendChild(automations());
             document.getElementById("automations").appendChild(friendAutomation());
         }
-        numFriends++;
-        cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
-        updateCubeCount();
-        updateFriendAutomation();
-        addCubesFromFriends();
+        if (numFriends < cubellaUpgrades[1].maxUses) {
+            numFriends++;
+            cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
+            // updateCubeCount();
+            updateFriendAutomation();
+        } else {
+
+        }
+        cps = numFriends/solveTime;
     }
 }
 
@@ -250,13 +259,6 @@ function friendAutomation() {
 function updateFriendAutomation() {
     var f = document.getElementById("friendAutomationCount");
     f.innerText = `${numFriends} friends, solving ${numFriends/solveTime} cubes per second`;
-}
-
-function addCubesFromFriends() {
-    cubesSolved = cubesSolved + BigInt(1);
-    updateCubeCount();
-    update333Image();
-    setTimeout(addCubesFromFriends, solveTime*1000/numFriends);
 }
 
 function addCubellaItem(name, desc, src, cost, func, id) {
@@ -327,6 +329,8 @@ function updateCubeCount() {
 function cubeButton() {
     var d = divClasses("center frosted");
 
+    d.style = "height: auto";
+
     var timerdiv = document.createElement("div");
     timerdiv.id = "timerDiv";
     var timerprogress = document.createElement("div");
@@ -341,6 +345,7 @@ function cubeButton() {
 
     var cubeimg = document.createElement("div");
     cubeimg.id = "cubeimg";
+    cubeimg.style = "height: 100%; width: 100%";
     cubeimg.onclick = cubeClicked;
     cubeimg.appendChild(newScrambled333Image());
     d.appendChild(cubeimg);
@@ -387,4 +392,28 @@ function cubeClicked() {
             tb.style.width = w + '%';
         }
     }
+}
+
+
+let lastTime = performance.now();
+let productionBucket = 0;
+
+function gameLoop(currentTime) {
+    const dt = currentTime - lastTime; // dt in milliseconds (Number)
+    lastTime = currentTime;
+
+    if (dt > 0) {
+        // add produced cubes (cps is cubes/sec, dt is ms)
+        productionBucket += cps * (dt / 1000);
+
+        const cubesToAdd = Math.floor(productionBucket);
+        if (cubesToAdd > 0) {
+            cubesSolved += BigInt(cubesToAdd);
+            productionBucket -= cubesToAdd;
+        }
+    }
+
+    updateCubeCount();
+
+    requestAnimationFrame(gameLoop);
 }
