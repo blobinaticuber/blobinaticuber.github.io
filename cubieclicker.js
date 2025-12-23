@@ -99,6 +99,8 @@ var cubesSolved = 0n;
 // time in seconds it takes to solve a cube
 var solveTime = 5;
 
+var numFriends = 0;
+
 
 
 // name, desc, src, cost, func, id
@@ -117,7 +119,7 @@ const cubella_friend = {
     desc: "You teach your friend to solve just as fast as you",
     imgsrc: "images/cubieclicker/friend.png",
     divID: "friend",
-    func: null,
+    func: hireFriendClicked,
     cost: 10,
     maxUses: 10
 };
@@ -133,24 +135,6 @@ function startGame() {
     var subbody = document.getElementById("subbody");
     subbody.appendChild(cubeCountDisplay());
     subbody.appendChild(magicPackage());
-}
-
-function titleAndButtons() {
-    var d3 = divClasses("flexbox space-between");
-    var left = divClasses("flexbox center");
-    left.appendChild(h1Tag("Cubie Clicker"));
-    left.appendChild(pCodeTag("v0.0.3"));
-    d3.appendChild(left);
-
-    var right = divClasses("flexbox center");
-    var d4 = divClasses("flexbox frosted");
-    d4.appendChild(pTag("Settings"));
-    right.appendChild(d4);
-    var d5 = divClasses("flexbox frosted");
-    d5.appendChild(pTag("About"));
-    right.appendChild(d5);
-    d3.appendChild(right);
-    return d3;
 }
 
 function magicPackage() {
@@ -210,13 +194,68 @@ function formatCost(cost) {
 }
 
 function cubing101Clicked() {
-    if (cubesSolved >= BigInt(2)) {
+    if (cubesSolved >= BigInt(cubellaUpgrades[0].cost)) {
         solveTime *= 0.95;
 
         document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${Math.trunc(solveTime * 10) / 10}s`;
         cubesSolved = cubesSolved - 2n;
         updateCubeCount();
     }
+}
+
+function hireFriendClicked() {
+    if (cubesSolved >= BigInt(cubellaUpgrades[1].cost)) {
+        if (numFriends == 0) {
+            // initial setup (add automations menu)
+            var l = document.getElementById("leftsubbody");
+            l.appendChild(automations());
+            document.getElementById("automations").appendChild(friendAutomation());
+        }
+        numFriends++;
+        cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
+        updateCubeCount();
+        updateFriendAutomation();
+        addCubesFromFriends();
+    }
+}
+
+function automations() {
+    var d = divClasses("frosted");
+    d.id = "automations";
+    d.appendChild(pTag("Automations"));
+
+    return d;
+}
+
+function friendAutomation() {
+    var d = divClasses("frosted");
+    d.appendChild(pTag("Friends"));
+
+    var d2 = divClasses("flexbox");
+
+    var i = document.createElement("img");
+    i.src = "images/cubieclicker/friend.png";
+    i.width = 100;
+    i.height = 100;
+    d2.appendChild(i);
+
+    var p = pTag(`${numFriends} friends, solving ${numFriends/solveTime} cubes per second`);
+    p.id = "friendAutomationCount";
+
+    d2.appendChild(p);
+    d.appendChild(d2);
+    return d;
+}
+
+function updateFriendAutomation() {
+    var f = document.getElementById("friendAutomationCount");
+    f.innerText = `${numFriends} friends, solving ${numFriends/solveTime} cubes per second`;
+}
+
+function addCubesFromFriends() {
+    cubesSolved = cubesSolved + BigInt(numFriends);
+    updateCubeCount();
+    setTimeout(addCubesFromFriends, solveTime/numFriends*1000);
 }
 
 function addCubellaItem(name, desc, src, cost, func, id) {
@@ -275,7 +314,6 @@ function updateCubellaItemState() {
             document.getElementById(cubellaUpgrades[i].divID).classList.add("tooexpensive");
         }
     }
-
 }
 
 function updateCubeCount() {
@@ -283,7 +321,6 @@ function updateCubeCount() {
     v.innerText = (`${bigIntFormat(cubesSolved)}`);
 
     updateCubellaItemState();
-
 }
 
 function cubeButton() {
