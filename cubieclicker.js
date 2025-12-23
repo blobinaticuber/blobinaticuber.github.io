@@ -97,7 +97,7 @@ const totalCubes = 43252003274489856000n;
 var cubesSolved = 0n;
 
 // time in seconds it takes to solve a cube
-var solveTime = 2;
+var solveTime = 5;
 
 var numFriends = 0;
 
@@ -196,15 +196,21 @@ function formatCost(cost) {
     return (cost > 1 ? `Cost: scrambles ${cost} cubes` : `Cost: scrambles ${cost} cube`);
 }
 
+function formatFloat(num) {
+    // cuts off a number after 2 decimal places
+    return Math.trunc(num*100)/100;
+}
+
 function cubing101Clicked() {
     if (cubesSolved >= BigInt(cubellaUpgrades[0].cost)) {
         solveTime *= 0.95;
 
-        document.getElementById("solveTimeDisplay").innerHTML = `Solve time: ${Math.trunc(solveTime * 10) / 10}s`;
+        document.getElementById("solveTimeDisplay").innerText = `Solve time: ${formatFloat(solveTime)}s`;
         cubesSolved = cubesSolved - BigInt(cubellaUpgrades[0].cost);
-        // updateCubeCount();
 
         cubellaUpgrades[0].cost = Math.trunc(cubellaUpgrades[0].cost*1.5);
+        document.getElementById(`${cubellaUpgrades[0].divID}-cost`).innerText = formatCost(cubellaUpgrades[0].cost);
+        updateFriendAutomation();
     }
 }
 
@@ -219,7 +225,8 @@ function hireFriendClicked() {
         if (numFriends < cubellaUpgrades[1].maxUses) {
             numFriends++;
             cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
-            // updateCubeCount();
+            cubellaUpgrades[1].cost = Math.trunc(cubellaUpgrades[1].cost*1.5);
+            document.getElementById(`${cubellaUpgrades[1].divID}-cost`).innerText = formatCost(cubellaUpgrades[1].cost);
             updateFriendAutomation();
         } else {
 
@@ -248,7 +255,7 @@ function friendAutomation() {
     i.height = 100;
     d2.appendChild(i);
 
-    var p = pTag(`${numFriends} friends, solving ${numFriends/solveTime} cubes per second`);
+    var p = pTag(`${numFriends} friends, solving ${formatFloat(numFriends/solveTime)} cubes per second`);
     p.id = "friendAutomationCount";
 
     d2.appendChild(p);
@@ -258,7 +265,7 @@ function friendAutomation() {
 
 function updateFriendAutomation() {
     var f = document.getElementById("friendAutomationCount");
-    f.innerText = `${numFriends} friends, solving ${numFriends/solveTime} cubes per second`;
+    f.innerText = `${numFriends} friends, solving ${formatFloat(numFriends/solveTime)} cubes per second`;
 }
 
 function addCubellaItem(name, desc, src, cost, func, id) {
@@ -277,7 +284,9 @@ function addCubellaItem(name, desc, src, cost, func, id) {
 
     var d3 = divClasses();
     d3.appendChild(pTag(desc));
-    d3.appendChild(pTag(formatCost(cost)));
+    let costTag = pTag(formatCost(cost));
+    costTag.id = `${id}-cost`;
+    d3.appendChild(costTag);
     d2.appendChild(d3);
     d.appendChild(d2);
     return d;
