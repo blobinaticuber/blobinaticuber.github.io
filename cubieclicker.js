@@ -255,6 +255,7 @@ function updateFriendAutomation() {
 function addCubesFromFriends() {
     cubesSolved = cubesSolved + BigInt(numFriends);
     updateCubeCount();
+    update333Image();
     setTimeout(addCubesFromFriends, solveTime/numFriends*1000);
 }
 
