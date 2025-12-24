@@ -85,6 +85,14 @@ function divClasses(cl) {
     return d;
 }
 
+function cubeIcon() {
+    let s = document.createElement("span");
+    s.classList.add("icon", "material-symbols-outlined");
+    s.innerText = "deployed_code";
+    return s;
+    // return "<span class='material-symbols-outlined'>deployed_code</span>";
+}
+
 
 
 // -------------------------------------------------------------------------------------------
@@ -105,7 +113,7 @@ var cps = 0;
 
 
 
-// name, desc, src, cost, func, id
+// title, desc, imgsrc, divID, func, cost, buyScale, uses, limit
 const cubella_cubingGuide = {
     title: "Expert Cubing Guide",
     desc: "Speeds up solve time by 5%",
@@ -113,7 +121,9 @@ const cubella_cubingGuide = {
     divID: "cubing101",
     func: cubing101Clicked,
     cost: 2,
-    maxUses: 8
+    buyScale: 1.5,
+    uses: 0,
+    limit: 8
 };
 
 const cubella_friend = {
@@ -123,7 +133,9 @@ const cubella_friend = {
     divID: "friend",
     func: hireFriendClicked,
     cost: 10,
-    maxUses: 10
+    buyScale: 1.2,
+    uses: 0,
+    limit: 12
 };
 
 var cubellaUpgrades = [cubella_cubingGuide, cubella_friend];
@@ -186,14 +198,14 @@ function cubella() {
 
     // adds each cubella upgrade to the div
     for (var i = 0; i < cubellaUpgrades.length; i++) {
-        d.appendChild(addCubellaItem(cubellaUpgrades[i].title, cubellaUpgrades[i].desc, cubellaUpgrades[i].imgsrc, cubellaUpgrades[i].cost, cubellaUpgrades[i].func, cubellaUpgrades[i].divID));
+        d.appendChild(addCubellaItem(cubellaUpgrades[i].title, cubellaUpgrades[i].desc, cubellaUpgrades[i].imgsrc, cubellaUpgrades[i].cost, cubellaUpgrades[i].func, cubellaUpgrades[i].divID, cubellaUpgrades[i].uses, cubellaUpgrades[i].limit));
     }
 
     return d;
 }
 
 function formatCost(cost) {
-    return (cost > 1 ? `Cost: scrambles ${cost} cubes` : `Cost: scrambles ${cost} cube`);
+    return `Cost: scrambles ${cost} `;
 }
 
 function formatFloat(num) {
@@ -201,37 +213,58 @@ function formatFloat(num) {
     return Math.trunc(num*100)/100;
 }
 
-function cubing101Clicked() {
-    if (cubesSolved >= BigInt(cubellaUpgrades[0].cost)) {
-        solveTime *= 0.95;
+function canAfford(price) {
+    return cubesSolved >= BigInt(price);
+}
 
+function cubing101Clicked() {
+    if (canAfford(cubellaUpgrades[0].cost) && (cubellaUpgrades[0].uses < cubellaUpgrades[0].limit)) {
+        // change and update the solve time
+        solveTime *= 0.95;
         document.getElementById("solveTimeDisplay").innerText = `Solve time: ${formatFloat(solveTime)}s`;
         cubesSolved = cubesSolved - BigInt(cubellaUpgrades[0].cost);
 
-        cubellaUpgrades[0].cost = Math.trunc(cubellaUpgrades[0].cost*1.5);
+        // increases uses and update limit text
+        cubellaUpgrades[0].uses++;
+        document.getElementById("cubing101-uses").innerText = `(${cubellaUpgrades[0].uses}/${cubellaUpgrades[0].limit})`;
+
+        // change and update the cost and the friends automation
+        cubellaUpgrades[0].cost = Math.trunc(cubellaUpgrades[0].cost*cubellaUpgrades[0].buyScale);
         document.getElementById(`${cubellaUpgrades[0].divID}-cost`).innerText = formatCost(cubellaUpgrades[0].cost);
-        updateFriendAutomation();
+        if (numFriends>0) updateFriendAutomation();
     }
 }
 
 function hireFriendClicked() {
-    if (cubesSolved >= BigInt(cubellaUpgrades[1].cost)) {
+    if (canAfford(cubellaUpgrades[1].cost)) {
         if (numFriends == 0) {
             // initial setup (add automations menu)
             var l = document.getElementById("leftsubbody");
             l.appendChild(automations());
-            document.getElementById("automations").appendChild(friendAutomation());
-        }
-        if (numFriends < cubellaUpgrades[1].maxUses) {
             numFriends++;
+            document.getElementById("automations").appendChild(friendAutomation());
+
+            cubellaUpgrades[1].uses++;
+            document.getElementById("friend-uses").innerText = `(${cubellaUpgrades[1].uses}/${cubellaUpgrades[1].limit})`;
+
             cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
-            cubellaUpgrades[1].cost = Math.trunc(cubellaUpgrades[1].cost*1.5);
+            cubellaUpgrades[1].cost = Math.trunc(cubellaUpgrades[1].cost*cubellaUpgrades[1].buyScale);
             document.getElementById(`${cubellaUpgrades[1].divID}-cost`).innerText = formatCost(cubellaUpgrades[1].cost);
             updateFriendAutomation();
-        } else {
+        }
+        else if (numFriends < cubellaUpgrades[1].limit) {
+            numFriends++;
 
+            cubellaUpgrades[1].uses++;
+            document.getElementById("friend-uses").innerText = `(${cubellaUpgrades[1].uses}/${cubellaUpgrades[1].limit})`;
+
+            cubesSolved = cubesSolved - BigInt(cubellaUpgrades[1].cost);
+            cubellaUpgrades[1].cost = Math.trunc(cubellaUpgrades[1].cost*cubellaUpgrades[1].buyScale);
+            document.getElementById(`${cubellaUpgrades[1].divID}-cost`).innerText = formatCost(cubellaUpgrades[1].cost);
+            updateFriendAutomation();
         }
         cps = numFriends/solveTime;
+
     }
 }
 
@@ -240,6 +273,24 @@ function automations() {
     d.id = "automations";
     d.appendChild(pTag("Automations"));
 
+    return d;
+}
+
+function CPSdiv(value) {
+    // value = CPS
+
+    let d = divClasses("flexbox left");
+    d.id = "friendAutomationCPS";
+
+    if (value < 1) {
+        d.appendChild(pTag("Solves 1"));
+        d.appendChild(cubeIcon());
+        d.appendChild(pTag(`/${formatFloat(1.0/value)}s`));
+    } else {
+        d.appendChild(pTag(`Solves ${formatFloat(value)}`));
+        d.appendChild(cubeIcon());
+        d.appendChild(pTag("/s"));
+    }
     return d;
 }
 
@@ -255,22 +306,38 @@ function friendAutomation() {
     i.height = 100;
     d2.appendChild(i);
 
-    var p = pTag(`${numFriends} friends, solving ${formatFloat(numFriends/solveTime)} cubes per second`);
-    p.id = "friendAutomationCount";
+    let d3 = document.createElement("div");
+    let n = pTag(`${numFriends} friends`);
+    n.id = "friendAutomationNumFriends";
+    d3.appendChild(n);
 
-    d2.appendChild(p);
+    let d4 = CPSdiv(numFriends/solveTime);
+    d4.id = "friendAutomationCPS";
+
+    d3.appendChild(d4);
+    d2.appendChild(d3);
     d.appendChild(d2);
     return d;
 }
 
 function updateFriendAutomation() {
-    var f = document.getElementById("friendAutomationCount");
-    f.innerText = `${numFriends} friends, solving ${formatFloat(numFriends/solveTime)} cubes per second`;
+    let f = document.getElementById("friendAutomationCPS");
+    f.replaceWith(CPSdiv(numFriends/solveTime));
+
+    let n = document.getElementById("friendAutomationNumFriends");
+    n.innerText = `${numFriends} friends`;
 }
 
-function addCubellaItem(name, desc, src, cost, func, id) {
+function addCubellaItem(name, desc, src, cost, func, id, uses, limit) {
     var d = divClasses("frosted");
-    d.appendChild(pTag(name));
+
+    let titleDiv = divClasses("flexbox left");
+    titleDiv.appendChild(pTag(name));
+    let u = pTag(`(${uses}/${limit})`);
+    u.id = `${id}-uses`;
+    titleDiv.appendChild(u);
+
+    d.appendChild(titleDiv);
     d.id = id;
 
     var d2 = divClasses("flexbox");
@@ -284,9 +351,16 @@ function addCubellaItem(name, desc, src, cost, func, id) {
 
     var d3 = divClasses();
     d3.appendChild(pTag(desc));
+
     let costTag = pTag(formatCost(cost));
     costTag.id = `${id}-cost`;
-    d3.appendChild(costTag);
+
+    let d4 = divClasses("flexbox left");
+    d4.appendChild(costTag)
+    d4.appendChild(cubeIcon());
+
+
+    d3.appendChild(d4);
     d2.appendChild(d3);
     d.appendChild(d2);
     return d;
@@ -311,6 +385,7 @@ function cubeCountDisplay() {
     num.id = "cubeCount";
     d2.appendChild(num);
     d2.appendChild(pTag(`/ ${bigIntFormat(totalCubes)}`));
+    d2.appendChild(cubeIcon());
     d.appendChild(d2);
     return d;
 }
@@ -318,7 +393,7 @@ function cubeCountDisplay() {
 function updateCubellaItemState() {
     // update the cubella upgrade divs
     for (var i = 0; i < cubellaUpgrades.length; i++) {
-        if (cubesSolved >= cubellaUpgrades[i].cost) {
+        if (canAfford(cubellaUpgrades[i].cost) && (cubellaUpgrades[i].uses != cubellaUpgrades[i].limit)) {
             document.getElementById(cubellaUpgrades[i].divID).classList.remove("tooexpensive");
             document.getElementById(cubellaUpgrades[i].divID).classList.add("canbuy");
         } else {

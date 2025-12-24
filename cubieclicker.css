@@ -28,6 +28,10 @@ body {
     #timerDiv {
         border: 2px solid white;
     }
+
+    .icon {
+        color: #ffffff;
+    }
 }
 
 @media (prefers-color-scheme: light) {
@@ -54,6 +58,10 @@ body {
 
     #timerDiv {
         border: 2px solid black;
+    }
+
+    .icon {
+        color: #000000;
     }
 }
 
@@ -83,7 +91,13 @@ body {
 .center {
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 5px;
+}
+
+.left {
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
 }
 
 .space-between {
