@@ -180,6 +180,13 @@ a:visited {
   border-radius: 25px;
   padding: 10px;
   border: 1px solid rgba(138, 138, 138, 0.484);
+  transition: 0.3s;
+}
+
+.yt-channel:hover {
+  transition: 0.3s;
+  translate: 0em 0.25em;
+  /* animation: auroraBorder 10s ease-in-out alternate infinite; */
 }
 
 .yt-channel div {
