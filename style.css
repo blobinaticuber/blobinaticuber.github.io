@@ -39,6 +39,17 @@ a:visited {
   text-decoration: none;
 }
 
+.languages {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.languages i {
+  font-size: 1.5em;
+}
+
 .project-box {
   display: flex;
   border-radius: 25px;
