@@ -94,6 +94,26 @@ a:visited {
   background: linear-gradient(#5c2323 0%, #090a0f 100%);
 }
 
+.gradient-yt-rf {
+  background: linear-gradient(#7e541a 0%, #090a0f 100%);
+}
+
+.gradient-yt-rfp {
+  background: linear-gradient(#441a7e 0%, #090a0f 100%);
+}
+
+.gradient-yt-zc {
+  background: linear-gradient(#1a547e 0%, #090a0f 100%);
+}
+
+.gradient-yt-ae {
+  background: linear-gradient(#7e1a5d 0%, #090a0f 100%);
+}
+
+.gradient-yt-psg {
+  background: linear-gradient(#6f7e1a 0%, #090a0f 100%);
+}
+
 .gradient-cubing {
   background: linear-gradient(#122964 0%, #090a0f 100%);
 }
@@ -124,13 +144,24 @@ a:visited {
   background-repeat: repeat;
 }
 
+.yt-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+
 .yt-image {
   border-radius: 50%;
+  border: 3px solid white;
 }
 
 .yt-channel {
   margin: 10px auto;
   display: flex;
+  align-items: center;
+  border-radius: 25px;
+  padding: 10px;
+  border: 1px solid rgba(138, 138, 138, 0.484);
 }
 
 .yt-channel div {
