@@ -240,6 +240,10 @@ a:visited {
   color: white;
 }
 
+.topnav .nav a span {
+  vertical-align: top;
+}
+
 .nrktbutton {
   font-size: 20px;
   margin: 4px;
