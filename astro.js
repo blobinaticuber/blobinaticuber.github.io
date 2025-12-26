@@ -9,7 +9,7 @@ function addStars(name) {
     var starstring = "";
 
     for (var i = 0; i < 100; i++) {
-        var random1 = Math.trunc(Math.random()*1000);
+        var random1 = Math.trunc(Math.random()*window.innerWidth);
         var random2 = Math.trunc(Math.random()*4000);
         starstring += `${random1}px ${random2}px #FFF , `;
     }
