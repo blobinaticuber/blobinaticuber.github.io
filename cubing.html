@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
     <link rel="stylesheet" href="style.css">
     <title>Rowan Fortier - Cubing</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
@@ -42,8 +45,12 @@
 
     <p>Some time in March 2016 I saw my mom playing with a Rubik's Cube, and we had a few little competitions to see who could build a side of a single colour the fastest. She always won, so one day I looked up a full tutorial on how to solve the cube, and pretended like I had figured it out myself to show off to my mom. My first ever timed solve was about 10 minutes.</p>
 
-    <h2>Competitions</h2>
-    <p>I've competed in 11 official competitions, and spectated at the 2025 World Championships. Check out my <a href="https://www.worldcubeassociation.org/persons/2016FORT03">World Cube Association</a> profile to see my results and rankings!</p>
+    <h2>Speedsolving</h2>
+    <p>I've competed in 11 official competitions, and spectated at the 2025 World Championships. Check out my <a href="https://www.worldcubeassociation.org/persons/2016FORT03">World Cube Association</a> profile to see my official results and rankings! Below is a graph of my personal best times on the standard 3x3x3 Rubik's Cube.</p>
+
+    <div class="chart">
+      <canvas id="pbChart"></canvas>
+    </div>
 
     <h2>Method Development</h2>
 
@@ -71,3 +78,92 @@
     <p>In 2021, I learned about the 4-dimensional Rubik's Cube. It took me a week to solve it by following a written guide online. Since then I have held several speedsolving world records, helped create the hypercubing.xyz wiki, solved the 5D and 6D cubes, and fostered the community on the Discord server.</p>
 
 </body>
+
+
+<script>
+  const ctx = document.getElementById('pbChart');
+
+  const pbData = {
+    datasets: [
+      {
+      borderColor: '#4287f5',
+      backgroundColor: '#4287f5',
+      label: '3x3x3 PB (seconds)',
+      data: [
+          {x: '2016-09-22', y: 20.296},
+          {x: '2016-09-26', y: 19.889},
+          {x: '2016-09-28', y: 19.047},
+          {x: '2016-10-01', y: 15.696},
+          {x: '2016-11-20', y: 15.017},
+          {x: '2016-12-11', y: 11.485},
+          {x: '2018-01-10', y: 10.71},
+          {x: '2020-03-17', y: 9.695},
+          {x: '2020-03-30', y: 9.694},
+          {x: '2020-12-26', y: 9.548},
+          {x: '2021-01-05', y: 8.574},
+          {x: '2021-02-23', y: 8.182},
+          {x: '2025-07-11', y: 7.09},
+        ]},
+    ]
+  }
+
+  new Chart(ctx, {
+    type: 'line',
+    data: pbData,
+    options: {
+        stepped: "before",
+            // plugins: {
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function (value) {
+                                return csToStringAxis(value*100);
+                            },
+                        },
+                    },
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'year'
+                        },
+                        max:new Date(),
+                    },
+                },
+            // }
+        }
+    });
+
+
+// takes in a number of centiseconds, and returns a formatted string
+function csToString(cs) {
+    var d = new Date(0, 0, 0, 0, 0, 0, cs * 10);
+    var cs = d.getMilliseconds() / 10;
+    var s = d.getSeconds();
+    var m = d.getMinutes();
+    var h = d.getHours();
+    var label = `${h}h ${m}m ${s}.${cs}s`;
+    if (h == 0) {
+        label = `${m}m ${s}.${cs}s`;
+    }
+    if (h == 0 && m == 0) {
+        label = `${s}.${cs}s`;
+    }
+    return label;
+}
+
+function csToStringAxis(cs) {
+    var d = new Date(0, 0, 0, 0, 0, 0, cs * 10);
+    var cs = d.getMilliseconds() / 10;
+    var s = d.getSeconds();
+    var m = d.getMinutes();
+    var h = d.getHours();
+    var label = `${h}h ${m}m ${s}s`;
+    if (h == 0) {
+        label = `${m}m ${s}s`;
+    }
+    if (h == 0 && m == 0) {
+        label = `${s}s`;
+    }
+    return label;
+}
+</script>
