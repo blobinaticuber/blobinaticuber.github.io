@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="funnyclocks.css">
     <title>Funny Clocks</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -21,84 +21,53 @@
     </div>
 
 
-    <h1>FUNNY CLOCKS</h1>
+    <h1>Funny Clocks</h1>
+
+    <p>Funny Clocks is a collection of alternative methods of timekeeping. Hover over each one for more information.</p>
+
+    <div class="clock-grid">
+
+        <div class="clock-widget">
+            <h3>24 Hour Time</h3>
+            <code><span id="24hours"></span>:<span id="24min"></span>:<span id="24sec"></span></code>
+            <p class="desc">The day is divided into 24 hours, which have 60 minutes, which have 60 seconds.</p>
+        </div>
+
+        <div class="clock-widget">
+            <h3>12 Hour Time</h3>
+            <code><span id="12hours"></span>:<span id="12min"></span>:<span id="12sec"></span> <span id="ampm"></span></code>
+            <p class="desc">Take 24 hour time, and divide it into two 12-hour long segments. One is denoted by AM and the other PM.</p>
+        </div>
+
+        <div class="clock-widget">
+            <h3>Seconds since midnight</h3>
+            <code><span id="totalSec"></span></code>
+            <p class="desc">The total number of seconds that have elapsed since last midnight. It counts from 0 to 86400.</p>
+        </div>
+
+        <div class="clock-widget">
+            <h3>Metric Time</h3>
+            <code><span id="metHour"></span>:<span id="metMin"></span>:<span id="metSec"></span></code>
+            <p class="desc">The day is divided into 10 hours, which have 100 minutes, which have 100 seconds.</p>
+        </div>
+
+        <div class="clock-widget">
+            <h3>Binary Time</h3>
+            <code><span id="bin1"></span> <span id="bin2"></span> <span id="bin3"> </span> <span id="bin4"></span></code>
+            <p class="desc">The day is divided into 2<sup>16</sup> parts, and counted up using the binary number system.</p>
+        </div>
+
+        <div class="clock-widget">
+            <h3>Hexadecimal Time</h3>
+            <code><span id="hex"></span></code>
+            <p class="desc">The day is divided into 2<sup>16</sup> parts, and counted up using the hexadecimal number system.</p>
+        </div>
+
+    </div>
 
 
-    <p>This website shows a bunch of clocks in silly formats for fun :p</p>
 
-    <p>24 Hour Time: <code><span id="24hours"></span>:<span id="24min"></span>:<span id="24sec"></span></code></p>
-
-    <p>12 Hour Time: <code><span id="12hours"></span>:<span id="12min"></span>:<span id="12sec"></span> <span id="ampm"></span></code></p>
-
-    <p>Total seconds since midnight: <code><span id="totalSec"></span></code></p>
-
-    <p>Metric Time: <code><span id="metHour"></span>:<span id="metMin"></span>:<span id="metSec"></span></code></p>
-
-    <p>Binary Time: <code><span id="bin1"></span> <span id="bin2"></span> <span id="bin3"> </span> <span id="bin4"></span></code></p>
-
-    <p>Hex time: <code><span id="hex"></span></code></p>
-
+    <script src="funnyclocks.js"></script>
 </body>
-
-<script>
-
-
-
-
-    function updateTime() {
-        let d = new Date();
-        let hours = d.getHours();
-        let minutes = d.getMinutes();
-        let seconds = d.getSeconds();
-        let milliseconds = d.getMilliseconds();
-
-        // 24 hour stuff
-        document.getElementById("24hours").innerHTML = hours < 10 ? "0" + hours.toString() : hours;
-        document.getElementById("24min").innerHTML = minutes < 10 ? "0" + minutes.toString() : minutes;
-        document.getElementById("24sec").innerHTML = seconds < 10 ? "0" + seconds.toString() : seconds;
-        // 12 hour stuff
-        document.getElementById("12hours").innerHTML = hours > 12 ? hours - 12 : hours;
-        document.getElementById("12min").innerHTML = minutes < 10 ? "0" + minutes.toString() : minutes;
-        document.getElementById("12sec").innerHTML = seconds < 10 ? "0" + seconds.toString() : seconds;
-        document.getElementById("ampm").innerHTML = hours > 12 ? "PM" : "AM";
-        // millisecond stuff
-        let ImperialMillisecondsFromMidnight = hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds;
-        document.getElementById("totalSec").innerHTML = parseInt(ImperialMillisecondsFromMidnight / 1000);
-        let MetricMillisecondsFromMidnight = ImperialMillisecondsFromMidnight * (100000 / 86400);
-        // document.getElementById("metricSec").innerHTML = parseInt(MetricMillisecondsFromMidnight / 1000);
-
-
-        let metricSecondFromMidnight = Math.trunc(MetricMillisecondsFromMidnight / 1000);
-        let metricHour = Math.trunc(metricSecondFromMidnight / 10000);
-        let metricMinute = Math.trunc((metricSecondFromMidnight - metricHour * 10000) / 100);
-        let metricSecond = metricSecondFromMidnight - metricHour * 10000 - metricMinute * 100;
-
-        document.getElementById("metHour").innerHTML = metricHour;
-        document.getElementById("metMin").innerHTML = metricMinute < 10 ? "0" + metricMinute.toString() : metricMinute;
-        document.getElementById("metSec").innerHTML = metricSecond < 10 ? "0" + metricSecond.toString() : metricSecond;
-
-        let binarySecondFromMidnight = ImperialMillisecondsFromMidnight * (65536 / 86400) / 1000;
-        document.getElementById("bin1").innerHTML = (truncateString(DecimalToBinary(binarySecondFromMidnight)));
-
-        let hexSecondFromMidnight = binarySecondFromMidnight.toString(16);
-        document.getElementById("hex").innerHTML = (truncateString(hexSecondFromMidnight.toUpperCase()));
-    }
-
-    setInterval(updateTime, 100);
-
-    function DecimalToBinary(d) {
-        return d.toString(2);
-    }
-
-    function truncateString(str) {
-        let array = str.split(".");
-        return array[0];
-    }
-
-
-
-</script>
-
-
 
 </html>
