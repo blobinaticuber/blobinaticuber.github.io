@@ -5,6 +5,17 @@ body {
   margin: auto;
 }
 
+.mcfont {
+  font-family: Monocraft;
+}
+
+@font-face {
+  font-family: 'Monocraft';
+  src: url('https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 li {
   color: white;
 }
@@ -33,6 +44,21 @@ a:link {
 
 a:visited {
   color: #8e96f0;
+}
+
+.sm-imgbox {
+  margin: 10px;
+  border: 1px solid rgba(138, 138, 138, 0.484);
+  border-radius: 25px;
+}
+
+.sm-imgbox img {
+  width: 100%;
+  border-radius: 25px;
+}
+
+.sm-imgbox p {
+  text-align: center;
 }
 
 .chart {
