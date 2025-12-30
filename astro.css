@@ -1,0 +1,221 @@
+body {
+  font: 18px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* background: #000000; */
+  background: linear-gradient(#000000 0%, #080b10 100%);
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+}
+
+li {
+  color: white;
+}
+
+h1 {
+  color: #c9d1d9;
+  animation: auroraText 10s ease-in-out alternate infinite;
+  font-size: 4.5rem;
+}
+
+p {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
+a:link {
+  color: #58a6ff;
+}
+
+a:visited {
+  color: #8e96f0;
+}
+
+.no-link-underline {
+  text-decoration: none;
+}
+
+.gradient-hellostars {
+  background: linear-gradient(#501a4e 0%, #090a0f 100%);
+}
+
+.gradient-canvasconnect {
+  background: linear-gradient(#1c2661 0%, #090a0f 100%);
+}
+
+.gradient-hypercubing {
+  background: linear-gradient(#2d1b35 0%, #090a0f 100%);
+}
+
+.gradient-333sim {
+  background: linear-gradient(#4b4b4b 0%, #090a0f 100%);
+}
+
+.gradient-stellamagnus {
+  background: linear-gradient(#23465c 0%, #090a0f 100%);
+}
+
+.gradient-yt {
+  background: linear-gradient(#5c2323 0%, #090a0f 100%);
+}
+
+.gradient-yt-rf {
+  background: linear-gradient(#7e541a 0%, #090a0f 100%);
+}
+
+.gradient-yt-rfp {
+  background: linear-gradient(#441a7e 0%, #090a0f 100%);
+}
+
+.gradient-yt-zc {
+  background: linear-gradient(#1a547e 0%, #090a0f 100%);
+}
+
+.gradient-yt-ae {
+  background: linear-gradient(#7e1a5d 0%, #090a0f 100%);
+}
+
+.gradient-yt-psg {
+  background: linear-gradient(#6f7e1a 0%, #090a0f 100%);
+}
+
+.gradient-cubing {
+  background: linear-gradient(#122964 0%, #090a0f 100%);
+}
+
+.gradient-cubicle {
+  background: linear-gradient(#644f12 0%, #090a0f 100%);
+}
+
+/* aurora animations */
+@keyframes auroraBorder {
+  0% {box-shadow: 0px -5px 15px rgba(128, 0, 94, 0.8), 0px 4px 15px rgba(32, 220, 241, 0.8);}
+  33.33% {box-shadow: 0px 4px 12px rgba(127, 29, 218, 0.8), 5px 10px 25px rgba(241, 32, 32, 0.8);}
+  66.66% {box-shadow: 0px 0px 25 rgba(29, 218, 130, 0.8), 15px 5px 15px rgba(255, 0, 255, 0.8);}
+  100% {box-shadow: 0px -5px 15px rgba(76, 29, 218, 0.8), 0px 4px 15px rgba(241, 123, 32, 0.8);}
+}
+
+@keyframes auroraText {
+  0% {text-shadow: 0px -15px 15px rgba(128, 0, 94, 0.8), 0px -4px 15px rgba(32, 220, 241, 0.8);}
+  33.33% {text-shadow: 0px 4px 12px rgba(127, 29, 218, 0.8), 5px -10px 25px rgba(241, 32, 32, 0.8);}
+  66.66% {text-shadow: 0px 0px 50px rgba(29, 218, 130, 0.8), 15px -5px 15px rgba(255, 0, 255, 0.8);}
+  100% {text-shadow: 0px -15px 15px rgba(76, 29, 218, 0.8), 0px -4px 15px rgba(241, 123, 32, 0.8);}
+}
+
+.astrophotography-body {
+  overflow: hidden;
+  height: 100vh;
+  background-repeat: repeat;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.img-showcase img {
+    border-radius: 25px;
+    width: 50%;
+    display: block;
+    margin:auto;
+    box-shadow: -5px -5px 15px rgba(128, 0, 94, 0.8), 5px 5px 15px rgba(32, 220, 241, 0.8);
+}
+
+.footer-social-link {
+    display: inline-block;
+    text-align: center;
+    width: 1.6rem;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.topnav .nav-icon-links a {
+  display: inline-block;
+  text-align: center;
+  width: 4rem;
+  padding: 8px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav .nav a {
+  float: left;
+  background-color: #1d0648;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+  font-size: 17px;
+  border: 2px solid white;
+  border-radius: 25px;
+  font-weight: bold;
+  margin: 5px;
+  transition: 0.3s;
+}
+
+/* Change the color of links on hover */
+.topnav .nav a:hover {
+  background-color: #ddd;
+  color: black;
+  translate: 0em 0.25em;
+  transition: 0.3s;
+}
+
+/* Add a color to the active/current link */
+.topnav .nav a.active {
+  background-color: #5404aa;
+  color: white;
+}
+
+.topnav .nav a.visited {
+  color: white;
+}
+
+.topnav .nav a span {
+  vertical-align: top;
+}
+
+
+
+#stars {
+  z-index: -1;
+  position: relative;
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  animation: animStar 150s linear infinite;
+}
+
+#stars2 {
+  z-index: -1;
+  position: relative;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  animation: animStar 100s linear infinite;
+}
+
+#stars3 {
+  z-index: -1;
+  position: relative;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  animation: animStar 50s linear infinite;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
