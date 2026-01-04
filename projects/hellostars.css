@@ -7,10 +7,10 @@ body {
 }
 
 .body2 {
-    max-width: 1000px;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
+  max-width: 1000px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 li {
