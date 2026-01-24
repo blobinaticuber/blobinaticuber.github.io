@@ -34,6 +34,12 @@ function drawGrid() {
 
 }
 
+function drawWinnerText(txt) {
+    ctx.fillStyle = "black";
+    ctx.font = "50px Arial";
+    ctx.fillText(txt,20,70);
+}
+
 // Arguments are in game board coords [0][0]...[2][2]
 function drawX(color, x, y) {
     // convert game board coords to canvas drawing coords
@@ -97,26 +103,75 @@ function BoardCoordtoCanvasCoord(c) {
     return c;
 }
 
+
 // GAME LOGIC
+
+
+const planeWins = [
+    // diagonals
+    [[0,0],[1,1],[2,2]],
+    [[0,2],[1,1],[2,0]],
+    // horizontals
+    [[0,0],[0,1],[0,2]],
+    [[1,0],[1,1],[1,2]],
+    [[2,0],[2,1],[2,2]],
+    // verticals
+    [[0,0],[1,0],[2,0]],
+    [[0,1],[1,1],[2,1]],
+    [[0,2],[1,2],[2,2]]
+];
+
+function findWin() {
+    // searches for wins
+    for (w=0; w<planeWins.length; w++) {
+        // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
+        const linescore = board[planeWins[w][0][0]][planeWins[w][0][1]] + board[planeWins[w][1][0]][planeWins[w][1][1]] + board[planeWins[w][2][0]][planeWins[w][2][1]];
+        if (Math.abs(linescore) == 3) {
+            gameEnds(linescore);
+            return;
+        }
+        if (linescore == -3) {
+            gameEnds(linescore);
+            return;
+        }
+    }
+    // check to see if the board is filled up for a tie
+    const isGridFull = () => board.every(row => !row.includes(0));
+    if (isGridFull()) {
+        gameEnds(0);
+    }
+}
+
+function gameEnds(state) {
+    // disable clicking on canvas
+    canvas.removeEventListener('click', handleClick);
+    if (state==3) {
+        drawWinnerText("X wins");
+    }
+    else if (state==-3) {
+        drawWinnerText("O wins");
+    }
+    else if (state==0) {
+        drawWinnerText("Tie");
+    }
+}
 
 var board = [[0,0,0],[0,0,0],[0,0,0]];
 
 // returns true if the board space is empty (0)
 function isEmpty(x,y) {
-    return (board[y][x] == 0);
+    return (board[x][y] == 0);
 }
 
-canvas.addEventListener('click', function(event) {
-    handleClick(event);
-}, false);
+canvas.addEventListener('click', handleClick );
 
 var clickCount = 0;
 
 function resetGame() {
+    canvas.addEventListener('click', handleClick );
     clickCount = 0;
     console.log("reset game");
     board = [[0,0,0],[0,0,0],[0,0,0]];
-    console.log(board);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -153,15 +208,15 @@ function handleClick(event) {
     // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
     if (validateClickCoords(x,y) && isEmpty(bx,by)) {
         if (clickCount%2==0) {
-            board[by][bx] = 1;
+            board[bx][by] = 1;
             drawX("red", bx, by);
         }
         else {
-            board[by][bx] = -1;
+            board[bx][by] = -1;
             drawO("blue", bx, by);
         }
+        findWin();
         clickCount++;
-        console.log(board);
     }
 
 
