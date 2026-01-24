@@ -37,6 +37,37 @@ function drawGrid() {
 
 }
 
+function drawArrows() {
+    if (gameMode == gameModes[0]) return;
+    if (gameMode == gameModes[1]) {
+        // console.log("game mode: " + gameMode);
+        // draw cylinder arrows
+        // (2 arrows on the left and right side pointing up)
+        drawArrow("green", [100,300], [100,200], "up");
+        drawArrow("green", [400,300], [400,200], "up");
+    }
+
+}
+
+function drawArrow(color, start, end, facing) {
+    ctx.beginPath();
+    ctx.moveTo(start[0], start[1]);
+    ctx.lineTo(end[0], end[1]);
+
+    if (facing==="up") {
+        ctx.lineTo(end[0]+12, end[1]+12);
+        ctx.moveTo(end[0], end[1]);
+        ctx.lineTo(end[0]-12, end[1]+12);
+    }
+
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.closePath();
+}
+
 function highlightCell(color, bx, by) {
     ctx.fillStyle = color;
     ctx.fillRect(BoardCoordtoCanvasCoord(bx),BoardCoordtoCanvasCoord(by),100, 100);
@@ -96,7 +127,7 @@ function drawO(color, x, y) {
 
 }
 
-drawGrid();
+
 
 
 function CanvasCoordtoBoardCoord(c) {
@@ -116,6 +147,9 @@ function BoardCoordtoCanvasCoord(c) {
 
 // GAME LOGIC
 
+var gameModes = ["plane", "cylinder"];
+var gameMode = gameModes[0]; // default to plane mode
+
 
 const planeWins = [
     // diagonals
@@ -131,7 +165,20 @@ const planeWins = [
     [[0,2],[1,2],[2,2]]
 ];
 
+const cylinderWins = [
+    // extra "diagonals" that now exists
+    // pos slope
+    [[0,2],[1,1],[2,0]],
+    [[1,2],[2,1],[0,0]],
+    [[2,2],[0,1],[1,0]],
+    // neg slope
+    [[2,2],[1,1],[0,0]],
+    [[1,2],[0,1],[2,0]],
+    [[0,2],[2,1],[1,0]]
+];
+
 function findWin() {
+    // console.log(`searching ${gameModes[gameMode]} wins`);
     // searches for wins
     var potentialWinCoords = [[[]]];
     for (w=0; w<planeWins.length; w++) {
@@ -147,6 +194,25 @@ function findWin() {
             return;
         }
     }
+
+    // search through additional Cylinder win conditions
+    if (gameMode===gameModes[1]) {
+        for (w=0; w<cylinderWins.length; w++) {
+            // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
+            potentialWinCoords = cylinderWins[w];
+            const linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
+            if (Math.abs(linescore) == 3) {
+                gameEnds(linescore, potentialWinCoords);
+                return;
+            }
+            if (linescore == -3) {
+                gameEnds(linescore, potentialWinCoords);
+                return;
+            }
+        }
+    }
+
+
     // check to see if the board is filled up for a tie
     const isGridFull = () => board.every(row => !row.includes(0));
     if (isGridFull()) {
@@ -194,6 +260,7 @@ function resetGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     drawGrid();
+    drawArrows();
 }
 
 function showNewGame() {
@@ -207,7 +274,16 @@ function showNewGame() {
 
 function newPlane() {
     showNewGame();
+    gameMode = gameModes[0];
     resetGame();
+
+}
+
+function newCylinder() {
+    showNewGame();
+    gameMode = gameModes[1];
+    resetGame();
+
 }
 
 
@@ -239,3 +315,8 @@ function handleClick(event) {
 
 
 }
+
+
+
+drawGrid();
+drawArrows();
