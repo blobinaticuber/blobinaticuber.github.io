@@ -1,0 +1,51 @@
+
+body {
+  background-image: linear-gradient(to right, #cccccccc 1px, transparent 1px),
+                    linear-gradient(to bottom, #cccccccc 1px, transparent 1px);
+  background-size: 200px 200px;
+}
+
+h1 {
+    animation: none;
+}
+
+canvas {
+    width: 500px;
+    height: 500px;
+    border: 10px solid white;
+    border-radius: 0.2em;
+    margin-top: 4em;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    background-color: rgb(255, 255, 255);
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+    border-radius: 0.2em;
+}
+
+button span {
+    vertical-align: bottom;
+    padding-right: 0.2em;
+}
+
+#newGameMenu {
+    z-index: 5;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    padding: 15px;
+    background: linear-gradient(#4b4b4bee 0%, #090a0fee 100%);
+    border-radius: 0.2em;
+}

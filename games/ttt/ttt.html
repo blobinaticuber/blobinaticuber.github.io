@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="ttt.css">
+    <title>Rowan Fortier - TTT</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+</head>
+
+
+
+<body>
+    <h1>Tic Tac Toe Ultimate Supreme</h1>
+
+    <div class="centered-container">
+        <canvas id="game" width="500" height="500"></canvas>
+    </div>
+
+    <div class="centered-container">
+        <button onclick="resetGame()"><span class="material-symbols-outlined">delete_forever</span>Reset</button>
+        <button onclick="showNewGame()"><span class="material-symbols-outlined">add_box</span>New Game</button>
+    </div>
+
+    <div id="newGameMenu">
+        <div style="display: flex; justify-content:space-between;">
+            <h2>New Game</h2>
+            <button onclick="showNewGame()"><span class="material-symbols-outlined">close</span>Close</button>
+        </div>
+
+        <div class="yt-grid" >
+            <button onclick="newPlane()">Plane</button>
+            <button>Cylinder</button>
+            <button>Mobius Loop</button>
+            <button>Torus</button>
+            <button>Klein Bottle</button>
+            <button>Projective Plane</button>
+        </div>
+    </div>
+
+
+</body>
+<script src="ttt.js"></script>
+</html>
