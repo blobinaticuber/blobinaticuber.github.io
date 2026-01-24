@@ -46,6 +46,11 @@ function drawArrows() {
         drawArrow("green", [100,300], [100,200], "up");
         drawArrow("green", [400,300], [400,200], "up");
     }
+    if (gameMode == gameModes[2]) {
+        // mobius
+        drawArrow("green", [100,200], [100,300], "down");
+        drawArrow("green", [400,300], [400,200], "up");
+    }
 
 }
 
@@ -58,6 +63,11 @@ function drawArrow(color, start, end, facing) {
         ctx.lineTo(end[0]+12, end[1]+12);
         ctx.moveTo(end[0], end[1]);
         ctx.lineTo(end[0]-12, end[1]+12);
+    }
+    if (facing==="down") {
+        ctx.lineTo(end[0]+12, end[1]-12);
+        ctx.moveTo(end[0], end[1]);
+        ctx.lineTo(end[0]-12, end[1]-12);
     }
 
 
@@ -79,6 +89,12 @@ function drawWinnerText(txt) {
     ctx.fillStyle = "black";
     ctx.font = "50px Arial";
     ctx.fillText(txt,20,70);
+}
+
+function drawGamemode() {
+    ctx.fillStyle = "black";
+    ctx.font = "50px Arial";
+    ctx.fillText(gameMode,20,470);
 }
 
 // Arguments are in game board coords [0][0]...[2][2]
@@ -147,7 +163,7 @@ function BoardCoordtoCanvasCoord(c) {
 
 // GAME LOGIC
 
-var gameModes = ["plane", "cylinder"];
+var gameModes = ["Plane", "Cylinder", "Mobius"];
 var gameMode = gameModes[0]; // default to plane mode
 
 
@@ -177,14 +193,20 @@ const cylinderWins = [
     [[0,2],[2,1],[1,0]]
 ];
 
+const mobiusWins = [
+
+];
+
 function findWin() {
     // console.log(`searching ${gameModes[gameMode]} wins`);
     // searches for wins
     var potentialWinCoords = [[[]]];
+
+    // search through normal Plane win conditions
     for (w=0; w<planeWins.length; w++) {
         // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
         potentialWinCoords = planeWins[w];
-        const linescore = board[planeWins[w][0][0]][planeWins[w][0][1]] + board[planeWins[w][1][0]][planeWins[w][1][1]] + board[planeWins[w][2][0]][planeWins[w][2][1]];
+        var linescore = board[planeWins[w][0][0]][planeWins[w][0][1]] + board[planeWins[w][1][0]][planeWins[w][1][1]] + board[planeWins[w][2][0]][planeWins[w][2][1]];
         if (Math.abs(linescore) == 3) {
             gameEnds(linescore, potentialWinCoords);
             return;
@@ -196,11 +218,11 @@ function findWin() {
     }
 
     // search through additional Cylinder win conditions
-    if (gameMode===gameModes[1]) {
+    if (gameMode == gameModes[1]) {
         for (w=0; w<cylinderWins.length; w++) {
             // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
             potentialWinCoords = cylinderWins[w];
-            const linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
+            var linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
             if (Math.abs(linescore) == 3) {
                 gameEnds(linescore, potentialWinCoords);
                 return;
@@ -261,6 +283,7 @@ function resetGame() {
     ctx.beginPath();
     drawGrid();
     drawArrows();
+    drawGamemode();
 }
 
 function showNewGame() {
@@ -283,7 +306,12 @@ function newCylinder() {
     showNewGame();
     gameMode = gameModes[1];
     resetGame();
+}
 
+function newMobius() {
+    showNewGame();
+    gameMode = gameModes[2];
+    resetGame();
 }
 
 
@@ -320,3 +348,4 @@ function handleClick(event) {
 
 drawGrid();
 drawArrows();
+drawGamemode();
