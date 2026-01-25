@@ -7,14 +7,16 @@ body {
 
 h1 {
     animation: none;
+    font-size: 2rem;
+    text-align: center;
 }
 
 canvas {
-    width: 500px;
-    height: 500px;
+    width: 80vmin;
+    height: 80vmin;
     border: 10px solid white;
     border-radius: 0.2em;
-    margin-top: 4em;
+    /* margin-top: 4em; */
 }
 
 .centered-container {
@@ -33,6 +35,10 @@ button {
     border-radius: 0.2em;
 }
 
+.destructive {
+    background-color: rgb(252, 125, 125);
+}
+
 button span {
     vertical-align: bottom;
     padding-right: 0.2em;
@@ -43,9 +49,9 @@ button span {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translate(-50%, -50%);
     display: block;
     padding: 15px;
-    background: linear-gradient(#4b4b4bee 0%, #090a0fee 100%);
+    background: linear-gradient(#4b4b4b 0%, #090a0f 100%);
     border-radius: 0.2em;
 }

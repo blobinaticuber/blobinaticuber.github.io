@@ -5,7 +5,7 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 ctx.fillStyle = "#FFFFFF";
-ctx.fillRect(0,0,canvas.clientWidth, canvas.clientHeight);
+ctx.fillRect(0,0,canvas.width, canvas.height);
 
 var playerColors = ["red", "blue"];
 var highlightColors = ["#FF000044", "#0000FF44"];
@@ -21,7 +21,7 @@ function rect(bcolor, x, y, w, h, strokeWidth) {
 
 function drawWhiteBG() {
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0,0,canvas.clientWidth, canvas.clientHeight);
+    ctx.fillRect(0,0,canvas.width, canvas.height);
 }
 
 function drawGrid() {
@@ -326,7 +326,7 @@ function handleClick(event) {
     const bx = CanvasCoordtoBoardCoord(x);
     const by = CanvasCoordtoBoardCoord(y);
     // debug print out the coordinates
-    // console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
+    console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
     // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
     if (validateClickCoords(x,y) && isEmpty(bx,by)) {
         if (clickCount%2==0) {
@@ -344,8 +344,34 @@ function handleClick(event) {
 
 }
 
+const scale = window.devicePixelRatio || 1;
+
+function resize() {
+    // Get the visual size from CSS
+    const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
+
+    // Set the internal resolution
+    canvas.width = Math.floor(size * scale);
+    canvas.height = Math.floor(size * scale);
+
+    // Scale the drawing context so 1 unit = 1 CSS pixel
+    ctx.scale(scale, scale);
+
+    drawGrid();
+drawArrows();
+drawGamemode();
+}
+
+window.addEventListener('resize', resize);
+resize();
 
 
+function renderGame() {
+    
+}
+
+
+// draw the initial game
 drawGrid();
 drawArrows();
 drawGamemode();
