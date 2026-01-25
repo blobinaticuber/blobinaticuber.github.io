@@ -4,9 +4,6 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-ctx.fillStyle = "#FFFFFF";
-ctx.fillRect(0,0,canvas.width, canvas.height);
-
 var playerColors = ["red", "blue"];
 var highlightColors = ["#FF000044", "#0000FF44"];
 
@@ -21,7 +18,7 @@ function rect(bcolor, x, y, w, h, strokeWidth) {
 
 function drawWhiteBG() {
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0,0,canvas.width, canvas.height);
+    ctx.fillRect(0,0,500, 500);
 }
 
 function drawGrid() {
@@ -143,12 +140,28 @@ function drawO(color, x, y) {
 
 }
 
+// uses board state to draw the X's and O's onto the canvas
+function drawXOs() {
+    for (i = 0; i <= 2; i++) {
+        for (j = 0; j <= 2; j++) {
+            // rect("black", 100*i, 100*j, 100, 100, 3);
+            if (board[i][j] == 1) {
+                drawX(playerColors[0], i, j);
+            } else if (board[i][j] == -1) {
+                drawO(playerColors[1], i, j);
+            }
+        }
+    }
+}
 
 
+// coordinate conversion functions
 
 function CanvasCoordtoBoardCoord(c) {
-    c+=-100;
-    if (c/100<0) return -1;
+    // scale the click coordinate to be based on a 500x500 grid
+    c/=(canvas.height/500);
+    c-=50;
+    if (c<0) return -1;
     c=Math.trunc(c/100);
     return c;
 }
@@ -156,12 +169,12 @@ function CanvasCoordtoBoardCoord(c) {
 function BoardCoordtoCanvasCoord(c) {
     c++;
     c*=100;
-    // c+=100;
     return c;
 }
 
-
+// -------------------------------------------------------------------------------------------
 // GAME LOGIC
+
 
 var gameModes = ["Plane", "Cylinder", "Mobius"];
 var gameMode = gameModes[0]; // default to plane mode
@@ -327,7 +340,7 @@ function handleClick(event) {
     const by = CanvasCoordtoBoardCoord(y);
     // debug print out the coordinates
     console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
-    // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
+    console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
     if (validateClickCoords(x,y) && isEmpty(bx,by)) {
         if (clickCount%2==0) {
             board[bx][by] = 1;
@@ -357,9 +370,7 @@ function resize() {
     // Scale the drawing context so 1 unit = 1 CSS pixel
     ctx.scale(scale, scale);
 
-    drawGrid();
-drawArrows();
-drawGamemode();
+    renderGame();
 }
 
 window.addEventListener('resize', resize);
@@ -367,11 +378,10 @@ resize();
 
 
 function renderGame() {
-    
+    // scale the canvas drawingsto fill the current canvas width and height (epic)
+    ctx.scale(canvas.width/500, canvas.height/500);
+    drawGrid();
+    drawArrows();
+    drawXOs();
+    drawGamemode();
 }
-
-
-// draw the initial game
-drawGrid();
-drawArrows();
-drawGamemode();

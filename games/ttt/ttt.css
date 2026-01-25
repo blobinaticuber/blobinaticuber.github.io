@@ -12,6 +12,8 @@ h1 {
 }
 
 canvas {
+    max-width: 800px;
+    max-height: 800px;
     width: 80vmin;
     height: 80vmin;
     border: 10px solid white;
@@ -26,11 +28,11 @@ canvas {
 
 button {
     background-color: rgb(255, 255, 255);
-    margin: 15px;
-    padding: 15px;
+    margin: 2vmin;
+    padding: 2vmin 4vmin;
     text-align: center;
     cursor: pointer;
-    font-size: 1em;
+    font-size: calc(max(1em,2vmin));
     text-decoration: none;
     border-radius: 0.2em;
 }
@@ -49,7 +51,7 @@ button span {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -70%);
     display: block;
     padding: 15px;
     background: linear-gradient(#4b4b4b 0%, #090a0f 100%);
