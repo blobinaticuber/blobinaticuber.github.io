@@ -10,7 +10,9 @@ body {
 }
 
 .gradient-astro {
-  background: linear-gradient(#000000 0%, #080b10 100%);
+  background: linear-gradient( #000000 0%, #080b10 100%);
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .mcfont {
@@ -196,11 +198,16 @@ a:visited {
 }
 
 .astrophotography-body {
-  overflow: hidden;
+  overflow: scroll;
+  scrollbar-width: none;
   height: 100vh;
   background-repeat: repeat;
   max-width: 1000px;
   margin: auto;
+}
+
+.astrophotography-body::-webkit-scrollbar {
+  display: none;
 }
 
 .yt-grid {
@@ -242,9 +249,10 @@ a:visited {
 
 /* Add a black background color to the top navigation */
 .topnav {
+  padding-top: 0.5em;
   overflow: hidden;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .topnav .nav-icon-links a {
