@@ -53,6 +53,20 @@ function drawArrows() {
         drawArrow("purple", [200,100], [300,100], "right");
         drawArrow("purple", [200,400], [300,400], "right");
     }
+    if (gameMode == gameModes[4]) {
+        // klein
+        drawArrow("green", [100,200], [100,300], "down");
+        drawArrow("green", [400,300], [400,200], "up");
+        drawArrow("purple", [200,100], [300,100], "right");
+        drawArrow("purple", [200,400], [300,400], "right");
+    }
+    if (gameMode == gameModes[5]) {
+        // klein
+        drawArrow("green", [100,200], [100,300], "down");
+        drawArrow("green", [400,300], [400,200], "up");
+        drawArrow("purple", [200,100], [300,100], "right");
+        drawArrow("purple", [300,400], [200,400], "left");
+    }
 
 }
 
@@ -75,6 +89,11 @@ function drawArrow(color, start, end, facing) {
         ctx.lineTo(end[0]-12, end[1]-12);
         ctx.moveTo(end[0], end[1]);
         ctx.lineTo(end[0]-12, end[1]+12);
+    }
+    if (facing==="left") {
+        ctx.lineTo(end[0]+12, end[1]-12);
+        ctx.moveTo(end[0], end[1]);
+        ctx.lineTo(end[0]+12, end[1]+12);
     }
 
 
@@ -186,7 +205,7 @@ function BoardCoordtoCanvasCoord(c) {
 // GAME LOGIC
 
 
-var gameModes = ["Plane", "Cylinder", "Mobius", "Torus"];
+var gameModes = ["Plane", "Cylinder", "Mobius", "Torus", "Klein", "Projective"];
 var gameMode = gameModes[0]; // default to plane mode
 
 var board = [[0,0,0],[0,0,0],[0,0,0]];
@@ -353,28 +372,9 @@ function showNewGame() {
     }
 }
 
-function newPlane() {
+function newGame(n) {
     showNewGame();
-    gameMode = gameModes[0];
-    resetGame();
-
-}
-
-function newCylinder() {
-    showNewGame();
-    gameMode = gameModes[1];
-    resetGame();
-}
-
-function newMobius() {
-    showNewGame();
-    gameMode = gameModes[2];
-    resetGame();
-}
-
-function newTorus() {
-    showNewGame();
-    gameMode = gameModes[3];
+    gameMode = gameModes[n];
     resetGame();
 }
 

@@ -19,7 +19,7 @@
     </div>
 
     <div class="centered-container">
-        <button class="destructive" onclick="resetGame()"><span class="material-symbols-outlined">delete_forever</span>Reset</button>
+        <button type="reset" class="destructive" onclick="resetGame()"><span class="material-symbols-outlined">delete_forever</span>Reset</button>
         <button onclick="showNewGame()"><span class="material-symbols-outlined">add_box</span>New Game</button>
     </div>
 
@@ -29,14 +29,15 @@
             <button class="destructive" onclick="showNewGame()"><span class="material-symbols-outlined">close</span>Close</button>
         </div>
 
-        <div class="yt-grid" >
-            <button onclick="newPlane()">Plane</button>
-            <button onclick="newCylinder()">Cylinder</button>
-            <button onclick="newMobius()">Mobius Strip</button>
-            <button onclick="newTorus()">Torus</button>
-            <button disabled>Klein Bottle</button>
-            <button disabled>Projective Plane</button>
+        <div class="grid" >
+            <button onclick="newGame(0)"><img src="../../images/ttt/plane.svg"><br>Plane</button>
+            <button onclick="newGame(1)"> <img src="../../images/ttt/cylinder.svg"><br>Cylinder</button>
+            <button onclick="newGame(2)"> <img src="../../images/ttt/mobius.svg"><br>Mobius</button>
+            <button onclick="newGame(3)"><img src="../../images/ttt/torus.svg"><br>Torus</button>
+            <button onclick="newGame(4)"><img src="../../images/ttt/klein.svg"><br>Klein</button>
+            <button onclick="newGame(5)"><img src="../../images/ttt/projective.svg"><br>Projective Plane</button>
         </div>
+
     </div>
 
 

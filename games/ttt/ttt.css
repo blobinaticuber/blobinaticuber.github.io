@@ -32,7 +32,7 @@ button {
     padding: 2vmin 4vmin;
     text-align: center;
     cursor: pointer;
-    font-size: calc(max(1em,2vmin));
+    font-size: calc(max(1.5em,2vmin));
     text-decoration: none;
     border-radius: 0.2em;
 }
@@ -46,14 +46,25 @@ button span {
     padding-right: 0.2em;
 }
 
+button img {
+    width: calc(max(70%,2em));
+    height: auto;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 #newGameMenu {
     z-index: 5;
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -50%);
     display: block;
     padding: 15px;
-    background: linear-gradient(#4b4b4b 0%, #090a0f 100%);
+    background: linear-gradient(#4b4b4bee 0%, #090a0fee 100%);
     border-radius: 0.2em;
 }
