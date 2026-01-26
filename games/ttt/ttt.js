@@ -179,103 +179,132 @@ function BoardCoordtoCanvasCoord(c) {
 var gameModes = ["Plane", "Cylinder", "Mobius"];
 var gameMode = gameModes[0]; // default to plane mode
 
+var board = [[0,0,0],[0,0,0],[0,0,0]];
+
+// Used to determine which tile to place
+var clickCount = 0;
+
+
+// Ex: given 9 -> [2,2] or 7 -> [0,2]
+function getCoords(num) {
+    num--; // makes it go to 0-indexing
+    var column = num % 3;
+    var row = Math.trunc(num / 3);
+    return [row, column];
+}
+
 
 const planeWins = [
     // diagonals
-    [[0,0],[1,1],[2,2]],
-    [[0,2],[1,1],[2,0]],
-    // horizontals
-    [[0,0],[0,1],[0,2]],
-    [[1,0],[1,1],[1,2]],
-    [[2,0],[2,1],[2,2]],
-    // verticals
-    [[0,0],[1,0],[2,0]],
-    [[0,1],[1,1],[2,1]],
-    [[0,2],[1,2],[2,2]]
+    [1,5,9],
+    [7,5,3],
+    // horizontal lines
+    [1,2,3],
+    [4,5,6],
+    [7,8,9],
+    // vertical lines
+    [1,4,7],
+    [2,5,8],
+    [3,6,9],
 ];
 
 const cylinderWins = [
     // extra "diagonals" that now exists
     // pos slope
-    [[0,2],[1,1],[2,0]],
-    [[1,2],[2,1],[0,0]],
-    [[2,2],[0,1],[1,0]],
-    // neg slope
-    [[2,2],[1,1],[0,0]],
-    [[1,2],[0,1],[2,0]],
-    [[0,2],[2,1],[1,0]]
+    [8,6,1],
+    [9,4,2],
+    //neg slope
+    [2,6,7],
+    [3,4,8]
 ];
 
 const mobiusWins = [
-
+    // New horizontal wins with the twist
+    [[0,0],[1,0],[2,2]],
+    [[1,0],[2,0],[0,2]],
 ];
 
-function findWin() {
-    // console.log(`searching ${gameModes[gameMode]} wins`);
+
+// Takes an array of 3 board spots that are in a line i.e [1,5,9]
+// returns the sum of the board of those positions
+function lineScore(arr) {
+    var first = getCoords(arr[0]);
+    var second = getCoords(arr[1]);
+    var third = getCoords(arr[2]);
+    return (board[first[0]][first[1]] + board[second[0]][second[1]] + board[third[0]][third[1]]);
+}
+
+function searchForWin() {
     // searches for wins
-    var potentialWinCoords = [[[]]];
 
     // search through normal Plane win conditions
-    for (w=0; w<planeWins.length; w++) {
-        // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
-        potentialWinCoords = planeWins[w];
-        var linescore = board[planeWins[w][0][0]][planeWins[w][0][1]] + board[planeWins[w][1][0]][planeWins[w][1][1]] + board[planeWins[w][2][0]][planeWins[w][2][1]];
-        if (Math.abs(linescore) == 3) {
-            gameEnds(linescore, potentialWinCoords);
-            return;
-        }
-        if (linescore == -3) {
-            gameEnds(linescore, potentialWinCoords);
+    for (line=0; line<planeWins.length; line++) {
+        var lineSum = lineScore(planeWins[line]);
+        if (Math.abs(lineSum) == 3) {
+            winningLine = planeWins[line];
+            gameEnds(lineSum, winningLine);
             return;
         }
     }
 
-    // search through additional Cylinder win conditions
+    // search through Cylinder win conditions
     if (gameMode == gameModes[1]) {
-        for (w=0; w<cylinderWins.length; w++) {
-            // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
-            potentialWinCoords = cylinderWins[w];
-            var linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
-            if (Math.abs(linescore) == 3) {
-                gameEnds(linescore, potentialWinCoords);
+        for (line=0; line<cylinderWins.length; line++) {
+            var lineSum = lineScore(cylinderWins[line]);
+            if (Math.abs(lineSum) == 3) {
+                winningLine = cylinderWins[line];
+                gameEnds(lineSum, winningLine);
                 return;
             }
-            if (linescore == -3) {
-                gameEnds(linescore, potentialWinCoords);
-                return;
-            }
-        }
+    }
+
+        // for (w=0; w<cylinderWins.length; w++) {
+        //     // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
+        //     winningLine = cylinderWins[w];
+        //     var linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
+        //     if (Math.abs(linescore) == 3) {
+        //         gameEnds(linescore, winningLine);
+        //         return;
+        //     }
+        // }
     }
 
 
     // check to see if the board is filled up for a tie
     const isGridFull = () => board.every(row => !row.includes(0));
     if (isGridFull()) {
-        gameEnds(0, potentialWinCoords);
+        gameEnds(0, winningLine);
     }
 }
 
-function gameEnds(state, winArray) {
+function gameEnds(linescore, winArray) {
     // disable clicking on canvas
     canvas.removeEventListener('click', handleClick);
-    if (state==3) {
+
+    if (linescore==3) {
         drawWinnerText("X wins");
-        highlightCell(highlightColors[0], winArray[0][0], winArray[0][1]);
-        highlightCell(highlightColors[0], winArray[1][0], winArray[1][1]);
-        highlightCell(highlightColors[0], winArray[2][0], winArray[2][1]);
+        highlightLine(highlightColors[0], winArray);
     }
-    else if (state==-3) {
+    else if (linescore==-3) {
         drawWinnerText("O wins");
-        highlightCell(highlightColors[1], winArray[0][0], winArray[0][1]);
-        highlightCell(highlightColors[1], winArray[1][0], winArray[1][1]);
-        highlightCell(highlightColors[1], winArray[2][0], winArray[2][1]);
+        highlightLine(highlightColors[1], winArray);
     }
-    else if (state==0) {
+    else if (linescore==0) {
         drawWinnerText("Tie");
     }
 }
 
-var board = [[0,0,0],[0,0,0],[0,0,0]];
+function highlightLine(color, arr) {
+    var first = getCoords(arr[0]);
+    var second = getCoords(arr[1]);
+    var third = getCoords(arr[2]);
+
+    highlightCell(color, first[0], first[1]);
+    highlightCell(color, second[0], second[1]);
+    highlightCell(color, third[0], third[1]);
+}
+
+
 
 // returns true if the board space is empty (0)
 function isEmpty(x,y) {
@@ -283,8 +312,6 @@ function isEmpty(x,y) {
 }
 
 canvas.addEventListener('click', handleClick );
-
-var clickCount = 0;
 
 function resetGame() {
     canvas.addEventListener('click', handleClick );
@@ -350,7 +377,7 @@ function handleClick(event) {
             board[bx][by] = -1;
             drawO(playerColors[1], bx, by);
         }
-        findWin();
+        searchForWin();
         clickCount++;
     }
 
