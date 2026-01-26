@@ -186,13 +186,20 @@ function drawXOs() {
 
 // coordinate conversion functions
 
-function CanvasCoordtoBoardCoord(c) {
-    // scale the click coordinate to be based on a 500x500 grid
-    c/=(canvas.height/500);
-    c-=50;
-    if (c<0) return -1;
-    c=Math.trunc(c/100);
-    return c;
+
+// Map a click coordinate (CSS pixels) to board index 0..2.
+// Use the canvas element's displayed size so clicks match visuals
+// `axis` is 'x' or 'y' depending on which coordinate is being converted.
+function CanvasCoordtoBoardCoord(c, axis = 'x') {
+    const rect = canvas.getBoundingClientRect();
+    const size = (axis === 'x') ? rect.width : rect.height;
+
+    // scale the click coordinate to the 0..500 logical grid
+    const scaled = c * (500 / size);
+    let idx = Math.trunc(scaled / 100);
+    idx--;
+    if (idx < 0) return -1;
+    return idx;
 }
 
 function BoardCoordtoCanvasCoord(c) {
@@ -260,6 +267,50 @@ const mobiusWins = [
     [4,8,9]
 ];
 
+const kleinWins = [
+    // horizontal wins with the mobius twist
+    [9,1,2],
+    [2,3,7],
+    [3,7,8],
+    [8,9,1],
+    // "twisted diagonals" from mobius
+    [1,2,6],
+    [2,3,4],
+    [7,8,6],
+    [4,8,9],
+    // Actually new klein wins
+    [7,2,6],
+    [4,8,3],
+    [1,8,6],
+    [2,9,4],
+    // triangles?
+    [5,9,7],
+    [5,1,3]
+];
+
+const projectiveWins = [
+    // horizontal wins with the mobius twist
+    [9,1,2],
+    [2,3,7],
+    [3,7,8],
+    [8,9,1],
+    // "twisted diagonals" from mobius
+    [1,2,6],
+    [2,3,4],
+    [7,8,6],
+    [4,8,9],
+    // New vertical wins with the top mobius twist
+    [9,1,4],
+    [4,7,3],
+    [6,9,1],
+    [7,3,6],
+    // New diagonal things
+    [6,8,3],
+    [9,2,6],
+    [2,4,7],
+    [1,4,8]
+];
+
 
 // Takes an array of 3 board spots that are in a line i.e [1,5,9]
 // returns the sum of the board of those positions
@@ -301,6 +352,28 @@ function searchForWin() {
             var lineSum = lineScore(mobiusWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = mobiusWins[line];
+                gameEnds(lineSum, winningLine);
+                return;
+            }
+        }
+    }
+
+    if (gameMode == gameModes[4]) {
+        for (line=0; line<kleinWins.length; line++) {
+            var lineSum = lineScore(kleinWins[line]);
+            if (Math.abs(lineSum) == 3) {
+                winningLine = kleinWins[line];
+                gameEnds(lineSum, winningLine);
+                return;
+            }
+        }
+    }
+
+    if (gameMode == gameModes[5]) {
+        for (line=0; line<projectiveWins.length; line++) {
+            var lineSum = lineScore(projectiveWins[line]);
+            if (Math.abs(lineSum) == 3) {
+                winningLine = projectiveWins[line];
                 gameEnds(lineSum, winningLine);
                 return;
             }
@@ -380,15 +453,15 @@ function newGame(n) {
 
 
 function validateClickCoords(x,y) {
-    return (CanvasCoordtoBoardCoord(x)>=0 && CanvasCoordtoBoardCoord(x) <=2 && CanvasCoordtoBoardCoord(y)>=0 && CanvasCoordtoBoardCoord(y)<=2);
+    return (CanvasCoordtoBoardCoord(x, 'x') >= 0 && CanvasCoordtoBoardCoord(x, 'x') <= 2 && CanvasCoordtoBoardCoord(y, 'y') >= 0 && CanvasCoordtoBoardCoord(y, 'y') <= 2);
 }
 
 function handleClick(event) {
 
     const x = event.offsetX;
     const y = event.offsetY;
-    const bx = CanvasCoordtoBoardCoord(x);
-    const by = CanvasCoordtoBoardCoord(y);
+    const bx = CanvasCoordtoBoardCoord(x, 'x');
+    const by = CanvasCoordtoBoardCoord(y, 'y');
     // debug print out the coordinates
     // console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
     // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
@@ -431,6 +504,7 @@ resize();
 function renderGame() {
     // scale the canvas drawingsto fill the current canvas width and height (epic)
     ctx.scale(canvas.width/500, canvas.height/500);
+    ctx.
     drawEverything();
 }
 
