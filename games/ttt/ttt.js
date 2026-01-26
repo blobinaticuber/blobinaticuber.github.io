@@ -481,18 +481,23 @@ function handleClick(event) {
 
 }
 
-const scale = window.devicePixelRatio || 1;
+
 
 function resize() {
+    const scale = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
     // Get the visual size from CSS
-    const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
+    canvas.width = rect.width*scale;
+    canvas.height = rect.height*scale;
+    // const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
 
     // Set the internal resolution
-    canvas.width = Math.floor(size * scale);
-    canvas.height = Math.floor(size * scale);
+    // canvas.width = Math.floor(size * scale);
+    // canvas.height = Math.floor(size * scale);
 
     // Scale the drawing context so 1 unit = 1 CSS pixel
-    ctx.scale(scale, scale);
+    // ctx.scale(scale, scale);
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
 
     renderGame();
 }
@@ -502,8 +507,8 @@ resize();
 
 
 function renderGame() {
-    // scale the canvas drawingsto fill the current canvas width and height (epic)
-    ctx.scale(canvas.width/500, canvas.height/500);
+    // scale the canvas drawings to fill the current canvas width and height (epic)
+    ctx.setTransform(canvas.width/500, 0, 0, canvas.height/500, 0, 0);
     drawEverything();
 }
 

@@ -14,10 +14,11 @@ h1 {
 canvas {
     max-width: 800px;
     max-height: 800px;
-    width: 80vmin;
-    height: 80vmin;
+    width: 70vmin;
+    height: 70vmin;
     border: 10px solid white;
     border-radius: 0.2em;
+    box-sizing: border-box;
     /* margin-top: 4em; */
 }
 
