@@ -190,7 +190,7 @@ function getCoords(num) {
     num--; // makes it go to 0-indexing
     var column = num % 3;
     var row = Math.trunc(num / 3);
-    return [row, column];
+    return [column, row];
 }
 
 
@@ -220,8 +220,15 @@ const cylinderWins = [
 
 const mobiusWins = [
     // New horizontal wins with the twist
-    [[0,0],[1,0],[2,2]],
-    [[1,0],[2,0],[0,2]],
+    [9,1,2],
+    [2,3,7],
+    [3,7,8],
+    [8,9,1],
+    // new " twisted diagonals"
+    [1,2,6],
+    [2,3,4],
+    [7,8,6],
+    [4,8,9]
 ];
 
 
@@ -256,23 +263,26 @@ function searchForWin() {
                 gameEnds(lineSum, winningLine);
                 return;
             }
+        }
     }
 
-        // for (w=0; w<cylinderWins.length; w++) {
-        //     // linescore is the sum of pieces in a winning line (3 means X win, -3 means O win, anything else is not a win)
-        //     winningLine = cylinderWins[w];
-        //     var linescore = board[cylinderWins[w][0][0]][cylinderWins[w][0][1]] + board[cylinderWins[w][1][0]][cylinderWins[w][1][1]] + board[cylinderWins[w][2][0]][cylinderWins[w][2][1]];
-        //     if (Math.abs(linescore) == 3) {
-        //         gameEnds(linescore, winningLine);
-        //         return;
-        //     }
-        // }
+    // search through Mobius win conditions
+    if (gameMode == gameModes[2]) {
+        for (line=0; line<mobiusWins.length; line++) {
+            var lineSum = lineScore(mobiusWins[line]);
+            if (Math.abs(lineSum) == 3) {
+                winningLine = mobiusWins[line];
+                gameEnds(lineSum, winningLine);
+                return;
+            }
+        }
     }
 
 
     // check to see if the board is filled up for a tie
     const isGridFull = () => board.every(row => !row.includes(0));
     if (isGridFull()) {
+        winningLine = [0,0,0];
         gameEnds(0, winningLine);
     }
 }
@@ -316,14 +326,12 @@ canvas.addEventListener('click', handleClick );
 function resetGame() {
     canvas.addEventListener('click', handleClick );
     clickCount = 0;
-    console.log("reset game");
+    console.log(`reset game. Game mode is ${gameMode}`);
     board = [[0,0,0],[0,0,0],[0,0,0]];
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
-    drawGrid();
-    drawArrows();
-    drawGamemode();
+    drawEverything();
 }
 
 function showNewGame() {
@@ -366,8 +374,8 @@ function handleClick(event) {
     const bx = CanvasCoordtoBoardCoord(x);
     const by = CanvasCoordtoBoardCoord(y);
     // debug print out the coordinates
-    console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
-    console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
+    // console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
+    // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
     if (validateClickCoords(x,y) && isEmpty(bx,by)) {
         if (clickCount%2==0) {
             board[bx][by] = 1;
@@ -407,6 +415,10 @@ resize();
 function renderGame() {
     // scale the canvas drawingsto fill the current canvas width and height (epic)
     ctx.scale(canvas.width/500, canvas.height/500);
+    drawEverything();
+}
+
+function drawEverything() {
     drawGrid();
     drawArrows();
     drawXOs();
