@@ -37,9 +37,7 @@ function drawGrid() {
 function drawArrows() {
     if (gameMode == gameModes[0]) return;
     if (gameMode == gameModes[1]) {
-        // console.log("game mode: " + gameMode);
-        // draw cylinder arrows
-        // (2 arrows on the left and right side pointing up)
+        // cylinder
         drawArrow("green", [100,300], [100,200], "up");
         drawArrow("green", [400,300], [400,200], "up");
     }
@@ -47,6 +45,13 @@ function drawArrows() {
         // mobius
         drawArrow("green", [100,200], [100,300], "down");
         drawArrow("green", [400,300], [400,200], "up");
+    }
+    if (gameMode == gameModes[3]) {
+        // torus
+        drawArrow("green", [100,300], [100,200], "up");
+        drawArrow("green", [400,300], [400,200], "up");
+        drawArrow("purple", [200,100], [300,100], "right");
+        drawArrow("purple", [200,400], [300,400], "right");
     }
 
 }
@@ -65,6 +70,11 @@ function drawArrow(color, start, end, facing) {
         ctx.lineTo(end[0]+12, end[1]-12);
         ctx.moveTo(end[0], end[1]);
         ctx.lineTo(end[0]-12, end[1]-12);
+    }
+    if (facing==="right") {
+        ctx.lineTo(end[0]-12, end[1]-12);
+        ctx.moveTo(end[0], end[1]);
+        ctx.lineTo(end[0]-12, end[1]+12);
     }
 
 
@@ -176,7 +186,7 @@ function BoardCoordtoCanvasCoord(c) {
 // GAME LOGIC
 
 
-var gameModes = ["Plane", "Cylinder", "Mobius"];
+var gameModes = ["Plane", "Cylinder", "Mobius", "Torus"];
 var gameMode = gameModes[0]; // default to plane mode
 
 var board = [[0,0,0],[0,0,0],[0,0,0]];
@@ -254,8 +264,8 @@ function searchForWin() {
         }
     }
 
-    // search through Cylinder win conditions
-    if (gameMode == gameModes[1]) {
+    // search through Cylinder/Torus win conditions
+    if (gameMode == gameModes[1] || gameMode == gameModes[3]) {
         for (line=0; line<cylinderWins.length; line++) {
             var lineSum = lineScore(cylinderWins[line]);
             if (Math.abs(lineSum) == 3) {
@@ -359,6 +369,12 @@ function newCylinder() {
 function newMobius() {
     showNewGame();
     gameMode = gameModes[2];
+    resetGame();
+}
+
+function newTorus() {
+    showNewGame();
+    gameMode = gameModes[3];
     resetGame();
 }
 
