@@ -504,7 +504,6 @@ resize();
 function renderGame() {
     // scale the canvas drawingsto fill the current canvas width and height (epic)
     ctx.scale(canvas.width/500, canvas.height/500);
-    ctx.
     drawEverything();
 }
 
