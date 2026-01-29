@@ -109,12 +109,37 @@ function highlightCell(color, bx, by) {
     ctx.fillRect(BoardCoordtoCanvasCoord(bx),BoardCoordtoCanvasCoord(by),100, 100);
 }
 
+function highlightLine(color, arr) {
+    let first = getCoords(arr[0]);
+    let second = getCoords(arr[1]);
+    let third = getCoords(arr[2]);
+
+    highlightCell(color, first[0], first[1]);
+    highlightCell(color, second[0], second[1]);
+    highlightCell(color, third[0], third[1]);
+}
+
 
 
 function drawWinnerText(txt) {
     ctx.fillStyle = "black";
     ctx.font = "50px Arial";
     ctx.fillText(txt,20,70);
+}
+
+function drawEndgame() {
+    if (whichPlayerWon == 1) {
+        drawWinnerText("X wins");
+        highlightLine(highlightColors[0], win);
+    }
+    if (whichPlayerWon == -1) {
+        drawWinnerText("O wins");
+        highlightLine(highlightColors[1], win);
+    }
+    if (whichPlayerWon == 0) {
+        drawWinnerText("Tie");
+    }
+
 }
 
 function drawGamemode() {
@@ -220,6 +245,8 @@ var aiDifficulty = aiDifficulties[0];
 
 
 var gameOver = false;
+var whichPlayerWon;
+var win;
 
 var board = [[0,0,0],[0,0,0],[0,0,0]];
 
@@ -268,8 +295,8 @@ function setAiDifficulty(num) {
 // Ex: given 9 -> [2,2] or 7 -> [0,2]
 function getCoords(num) {
     num--; // makes it go to 0-indexing
-    var column = num % 3;
-    var row = Math.trunc(num / 3);
+    let column = num % 3;
+    let row = Math.trunc(num / 3);
     return [column, row];
 }
 
@@ -359,9 +386,9 @@ const projectiveWins = [
 // Takes an array of 3 board spots that are in a line i.e [1,5,9]
 // returns the sum of the board of those positions
 function lineScore(brd, arr) {
-    var first = getCoords(arr[0]);
-    var second = getCoords(arr[1]);
-    var third = getCoords(arr[2]);
+    let first = getCoords(arr[0]);
+    let second = getCoords(arr[1]);
+    let third = getCoords(arr[2]);
     return (brd[first[0]][first[1]] + brd[second[0]][second[1]] + brd[third[0]][third[1]]);
 }
 
@@ -370,7 +397,7 @@ function searchForWin(brd) {
 
     // search through normal Plane win conditions
     for (line=0; line<planeWins.length; line++) {
-        var lineSum = lineScore(brd, planeWins[line]);
+        let lineSum = lineScore(brd, planeWins[line]);
         if (Math.abs(lineSum) == 3) {
             winningLine = planeWins[line];
             return [true, lineSum, winningLine];
@@ -380,7 +407,7 @@ function searchForWin(brd) {
     // search through Cylinder/Torus win conditions
     if (gameMode == gameModes[1] || gameMode == gameModes[3]) {
         for (line=0; line<cylinderWins.length; line++) {
-            var lineSum = lineScore(brd, cylinderWins[line]);
+            let lineSum = lineScore(brd, cylinderWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = cylinderWins[line];
                 return [true, lineSum, winningLine];
@@ -391,7 +418,7 @@ function searchForWin(brd) {
     // search through Mobius win conditions
     if (gameMode == gameModes[2]) {
         for (line=0; line<mobiusWins.length; line++) {
-            var lineSum = lineScore(brd, mobiusWins[line]);
+            let lineSum = lineScore(brd, mobiusWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = mobiusWins[line];
                 return [true, lineSum, winningLine];
@@ -399,9 +426,10 @@ function searchForWin(brd) {
         }
     }
 
+    // search through klein win conditions
     if (gameMode == gameModes[4]) {
         for (line=0; line<kleinWins.length; line++) {
-            var lineSum = lineScore(brd, kleinWins[line]);
+            let lineSum = lineScore(brd, kleinWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = kleinWins[line];
                 return [true, lineSum, winningLine];
@@ -409,21 +437,19 @@ function searchForWin(brd) {
         }
     }
 
+    // search through projective plane win conditions
     if (gameMode == gameModes[5]) {
         for (line=0; line<projectiveWins.length; line++) {
-            var lineSum = lineScore(projectiveWins[line]);
+            let lineSum = lineScore(projectiveWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = projectiveWins[line];
                 return [true, lineSum, winningLine];
             }
         }
     }
-
-
     // check to see if the board is filled up for a tie
     if (isGridFull(brd)) {
-        winningLine = [0,0,0];
-        return [true, 0, winningLine];
+        return [true, 0, [0,0,0]];
     }
     return [false, 0, [0,0,0]];
 }
@@ -438,29 +464,17 @@ function gameEnds(linescore, winArray) {
     gameOver = true;
 
     if (linescore==3) {
-        drawWinnerText("X wins");
-        highlightLine(highlightColors[0], winArray);
+        whichPlayerWon = 1;
+        win = winArray;
     }
     else if (linescore==-3) {
-        drawWinnerText("O wins");
-        highlightLine(highlightColors[1], winArray);
+        whichPlayerWon = -1;
+        win = winArray;
     }
     else if (linescore==0) {
-        drawWinnerText("Tie");
+        whichPlayerWon = 0;
     }
 }
-
-function highlightLine(color, arr) {
-    var first = getCoords(arr[0]);
-    var second = getCoords(arr[1]);
-    var third = getCoords(arr[2]);
-
-    highlightCell(color, first[0], first[1]);
-    highlightCell(color, second[0], second[1]);
-    highlightCell(color, third[0], third[1]);
-}
-
-
 
 // returns true if the board space is empty (0)
 function isEmpty(brd, x,y) {
@@ -476,8 +490,6 @@ function resetGame() {
     board = [[0,0,0],[0,0,0],[0,0,0]];
     gameOver = false;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
     drawEverything();
 }
 
@@ -502,60 +514,93 @@ function newGame(n) {
 function insertPiece(brd, who, x, y) {
     if (who == 0) {
         brd[x][y] = 1;
-        drawX(playerColors[0], x, y);
     } else if (who == 1) {
         brd[x][y] = -1;
-        drawO(playerColors[1], x, y);
     }
 }
 
-function AIcanWin() {
-    // brute force and see if adding O in any of the spots will result in O winning.
-    // If so, then O should go in that spot
+function removePiece(brd, x, y) {
+    brd[x][y] = 0;
+}
 
-    let hypotheticalBoard = structuredClone(board);
+function evaluateBoard(brd) {
+    let bestscore = -Infinity;
+    let bestMove;
+
     for (i = 0; i <= 2; i++) {
         for (j = 0; j <= 2; j++) {
-            hypotheticalBoard = structuredClone(board);
-            if (!isEmpty(hypotheticalBoard, i, j)) {
-                insertPiece(hypotheticalBoard, getTurn(), i, j);
-                let w = searchForWin(hypotheticalBoard);
-                // if AI win found
-                if (w[0]) {
-                    return [i,j];
-                }
+            // if that board space is free
+            if (isEmpty(brd, i, j)) {
+                insertPiece(brd, getTurn(), i, j);
             }
         }
     }
-    return [false];
+}
+
+function getRandomAImove() {
+    let spot = randomSpot();
+    // pick a random spot until it finds a spot that is empty
+    while (!isEmpty(board, spot[0], spot[1])) {
+        spot = randomSpot();
+    }
+    return spot;
+}
+
+function getNormalAImove() {
+    // How normal difficulty AI works:
+    // If it can win, it will take the win
+    for (i = 0; i <= 2; i++) {
+        for (j = 0; j <= 2; j++) {
+            // if the board is empty at the spot, check if going there results in a win for O
+            if (isEmpty(board, i, j)) {
+                // insert O
+                insertPiece(board, 1, i, j);
+                // check if that results in a win
+                if (searchForWin(board)[0]) {
+                    let spot = [i, j];
+                    removePiece(board, i, j);
+                    return spot;
+                }
+                // remove O
+                removePiece(board, i, j);
+            }
+        }
+    }
+    // If it can block X from winning, it will do that
+    for (i = 0; i <= 2; i++) {
+        for (j = 0; j <= 2; j++) {
+            // if the board is empty at the spot, check if going there results in a win for O
+            if (isEmpty(board, i, j)) {
+                // insert X
+                insertPiece(board, 0, i, j);
+                // check if that results in a win
+                if (searchForWin(board)[0]) {
+                    let spot = [i, j];
+                    removePiece(board, i, j);
+                    return spot;
+                }
+                // remove O
+                removePiece(board, i, j);
+            }
+        }
+    }
+    // Otherwise, go for a random move
+    return getRandomAImove();
 }
 
 function getAImove() {
     let spot = [];
     // random moves
     if (aiDifficulty == aiDifficulties[0]) {
-        spot = randomSpot();
-        while (!isEmpty(board, spot[0], spot[1])) {
-            spot = randomSpot();
-        }
+        spot = getRandomAImove();
     }
     // normal difficulty
     if (aiDifficulty == aiDifficulties[1]) {
-        if (AIcanWin()[0]) {
-            spot = AIcanWin();
-        } else {
-            spot = randomSpot();
-            while (!isEmpty(board, spot[0], spot[1])) {
-                spot = randomSpot();
-            }
-        }
+        spot = getNormalAImove();
     }
     // demon difficulty
     if (aiDifficulty == aiDifficulties[2]) {
-        spot = randomSpot();
-        while (!isEmpty(board, spot[0], spot[1])) {
-            spot = randomSpot();
-        }
+        spot = getRandomAImove();
     }
     return spot;
 }
@@ -610,8 +655,12 @@ function handleClick(event) {
             }
         }
     }
+    drawEverything();
 }
 
+
+// --------------------
+// Some more canvas graphics stuff
 
 
 function resize() {
@@ -636,8 +685,13 @@ function renderGame() {
 }
 
 function drawEverything() {
+    // clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    // draw all the stuff
     drawGrid();
     drawArrows();
     drawXOs();
     drawGamemode();
+    if (gameOver) drawEndgame();
 }
