@@ -6,6 +6,8 @@ body {
 }
 
 h1 {
+    margin: 2%;
+    color: white;
     animation: none;
     font-size: 2rem;
     text-align: center;
@@ -39,12 +41,18 @@ button {
 }
 
 .destructive {
-    background-color: rgb(252, 125, 125);
+    background-color: rgb(255, 128, 128);
+}
+
+.selected {
+    background-color: rgb(128, 255, 172);
 }
 
 button span {
     vertical-align: bottom;
     padding-right: 0.2em;
+    font-size: 2em;
+    /* line-height: calc(max(5em,3vmin)); */
 }
 
 button img {
@@ -52,10 +60,25 @@ button img {
     height: auto;
 }
 
+button svg {
+    width: calc(max(50%,2em));
+    height: auto;
+}
+
 .grid {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr 1fr 1fr;
+}
+
+.newGameMenuHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.playerSelector {
+    display: flex;
+    justify-content: left;
 }
 
 #newGameMenu {
@@ -68,4 +91,10 @@ button img {
     padding: 15px;
     background: linear-gradient(#4b4b4bee 0%, #090a0fee 100%);
     border-radius: 0.2em;
+    max-height: 90%;
+    overflow: scroll;
+}
+
+#aiDifficulty {
+    display: none;
 }

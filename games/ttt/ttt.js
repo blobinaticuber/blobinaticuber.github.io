@@ -214,11 +214,37 @@ function BoardCoordtoCanvasCoord(c) {
 
 var gameModes = ["Plane", "Cylinder", "Mobius", "Torus", "Klein", "Projective"];
 var gameMode = gameModes[0]; // default to plane mode
+var numplayers = 2; // should only ever be 2 or 1
+var aiDifficulty = "random"; // normal or demon
+
+var gameOver = false;
 
 var board = [[0,0,0],[0,0,0],[0,0,0]];
 
 // Used to determine which tile to place
-var clickCount = 0;
+var turnCount = 0;
+
+function getTurn() {
+    return (turnCount % 2 == 0 ? 0 : 1);
+}
+
+function setPlayerMode(num) {
+    numplayers = (num>=2 ? 2 : 1);
+    // console.log(`Set game to ${numplayers}-player mode`);
+
+    // styling of the button elements
+    if (numplayers == 2) {
+        document.getElementById("2p").classList.add("selected");
+        document.getElementById("1p").classList.remove("selected");
+        document.getElementById("aiDifficulty").style.display = "none";
+    } else if (numplayers == 1) {
+        document.getElementById("1p").classList.add("selected");
+        document.getElementById("2p").classList.remove("selected");
+        document.getElementById("aiDifficulty").style.display = "block";
+    }
+
+
+}
 
 
 // Ex: given 9 -> [2,2] or 7 -> [0,2]
@@ -382,16 +408,20 @@ function searchForWin() {
 
 
     // check to see if the board is filled up for a tie
-    const isGridFull = () => board.every(row => !row.includes(0));
     if (isGridFull()) {
         winningLine = [0,0,0];
         gameEnds(0, winningLine);
     }
 }
 
+function isGridFull() {
+    return board.every(row => !row.includes(0));
+}
+
 function gameEnds(linescore, winArray) {
     // disable clicking on canvas
     canvas.removeEventListener('click', handleClick);
+    gameOver = true;
 
     if (linescore==3) {
         drawWinnerText("X wins");
@@ -427,9 +457,10 @@ canvas.addEventListener('click', handleClick );
 
 function resetGame() {
     canvas.addEventListener('click', handleClick );
-    clickCount = 0;
+    turnCount = 0;
     console.log(`reset game. Game mode is ${gameMode}`);
     board = [[0,0,0],[0,0,0],[0,0,0]];
+    gameOver = false;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -440,6 +471,9 @@ function showNewGame() {
     const menu = document.getElementById("newGameMenu");
     if (menu.style.display===("none")) {
         menu.style.display = "block";
+        if (numplayers == 2) {
+            document.getElementById("2p").classList.add("selected");
+        }
     } else {
         menu.style.display = "none";
     }
@@ -451,13 +485,37 @@ function newGame(n) {
     resetGame();
 }
 
+function insertPiece(who, x, y) {
+    if (who == 0) {
+        board[x][y] = 1;
+        drawX(playerColors[0], x, y);
+    } else if (who == 1) {
+        board[x][y] = -1;
+        drawO(playerColors[1], x, y);
+    }
+}
+
+function getAImove() {
+    let spot = [];
+    if (aiDifficulty === "random") {
+        spot = randomSpot();
+        while (!isEmpty(spot[0], spot[1])) {
+            spot = randomSpot();
+        }
+    }
+    return spot;
+}
+
+function randomSpot() {
+    return ([Math.floor(Math.random()*3), Math.floor(Math.random()*3)]);
+}
+
 
 function validateClickCoords(x,y) {
     return (CanvasCoordtoBoardCoord(x, 'x') >= 0 && CanvasCoordtoBoardCoord(x, 'x') <= 2 && CanvasCoordtoBoardCoord(y, 'y') >= 0 && CanvasCoordtoBoardCoord(y, 'y') <= 2);
 }
 
 function handleClick(event) {
-
     const x = event.offsetX;
     const y = event.offsetY;
     const bx = CanvasCoordtoBoardCoord(x, 'x');
@@ -465,19 +523,32 @@ function handleClick(event) {
     // debug print out the coordinates
     // console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
     // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
-    if (validateClickCoords(x,y) && isEmpty(bx,by)) {
-        if (clickCount%2==0) {
-            board[bx][by] = 1;
-            drawX(playerColors[0], bx, by);
-        }
-        else {
-            board[bx][by] = -1;
-            drawO(playerColors[1], bx, by);
-        }
-        searchForWin();
-        clickCount++;
-    }
 
+    if (validateClickCoords(x,y) && isEmpty(bx,by)) {
+        // 2-player mode
+        if (numplayers == 2) {
+            insertPiece(getTurn(), bx, by);
+            searchForWin();
+            turnCount++;
+        }
+        // 1-player mode
+        else if (numplayers == 1) {
+            // do x's turn
+            insertPiece(getTurn(), bx, by);
+            searchForWin();
+            turnCount++;
+
+            // do the computer's turn
+            if (!isGridFull() && !gameOver) {
+                let mv = getAImove();
+                insertPiece(getTurn(), mv[0], mv[1]);
+                searchForWin();
+                turnCount++;
+            }
+
+
+        }
+    }
 
 }
 
@@ -489,14 +560,6 @@ function resize() {
     // Get the visual size from CSS
     canvas.width = rect.width*scale;
     canvas.height = rect.height*scale;
-    // const size = Math.min(window.innerWidth, window.innerHeight) * 0.9;
-
-    // Set the internal resolution
-    // canvas.width = Math.floor(size * scale);
-    // canvas.height = Math.floor(size * scale);
-
-    // Scale the drawing context so 1 unit = 1 CSS pixel
-    // ctx.scale(scale, scale);
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
 
     renderGame();
