@@ -215,7 +215,9 @@ function BoardCoordtoCanvasCoord(c) {
 var gameModes = ["Plane", "Cylinder", "Mobius", "Torus", "Klein", "Projective"];
 var gameMode = gameModes[0]; // default to plane mode
 var numplayers = 2; // should only ever be 2 or 1
-var aiDifficulty = "random"; // normal or demon
+var aiDifficulties = ["random", "normal", "demon"];
+var aiDifficulty = aiDifficulties[0];
+
 
 var gameOver = false;
 
@@ -230,7 +232,6 @@ function getTurn() {
 
 function setPlayerMode(num) {
     numplayers = (num>=2 ? 2 : 1);
-    // console.log(`Set game to ${numplayers}-player mode`);
 
     // styling of the button elements
     if (numplayers == 2) {
@@ -242,7 +243,24 @@ function setPlayerMode(num) {
         document.getElementById("2p").classList.remove("selected");
         document.getElementById("aiDifficulty").style.display = "block";
     }
+}
 
+function setAiDifficulty(num) {
+    aiDifficulty = aiDifficulties[num];
+    if (num == 0) {
+        document.getElementById("random").classList.add("selected");
+        document.getElementById("normal").classList.remove("selected");
+        document.getElementById("demon").classList.remove("selected");
+    }
+    else if (num == 1) {
+        document.getElementById("random").classList.remove("selected");
+        document.getElementById("normal").classList.add("selected");
+        document.getElementById("demon").classList.remove("selected");
+    } else if (num == 2) {
+        document.getElementById("random").classList.remove("selected");
+        document.getElementById("normal").classList.remove("selected");
+        document.getElementById("demon").classList.add("selected");
+    }
 
 }
 
@@ -340,34 +358,32 @@ const projectiveWins = [
 
 // Takes an array of 3 board spots that are in a line i.e [1,5,9]
 // returns the sum of the board of those positions
-function lineScore(arr) {
+function lineScore(brd, arr) {
     var first = getCoords(arr[0]);
     var second = getCoords(arr[1]);
     var third = getCoords(arr[2]);
-    return (board[first[0]][first[1]] + board[second[0]][second[1]] + board[third[0]][third[1]]);
+    return (brd[first[0]][first[1]] + brd[second[0]][second[1]] + brd[third[0]][third[1]]);
 }
 
-function searchForWin() {
+function searchForWin(brd) {
     // searches for wins
 
     // search through normal Plane win conditions
     for (line=0; line<planeWins.length; line++) {
-        var lineSum = lineScore(planeWins[line]);
+        var lineSum = lineScore(brd, planeWins[line]);
         if (Math.abs(lineSum) == 3) {
             winningLine = planeWins[line];
-            gameEnds(lineSum, winningLine);
-            return;
+            return [true, lineSum, winningLine];
         }
     }
 
     // search through Cylinder/Torus win conditions
     if (gameMode == gameModes[1] || gameMode == gameModes[3]) {
         for (line=0; line<cylinderWins.length; line++) {
-            var lineSum = lineScore(cylinderWins[line]);
+            var lineSum = lineScore(brd, cylinderWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = cylinderWins[line];
-                gameEnds(lineSum, winningLine);
-                return;
+                return [true, lineSum, winningLine];
             }
         }
     }
@@ -375,22 +391,20 @@ function searchForWin() {
     // search through Mobius win conditions
     if (gameMode == gameModes[2]) {
         for (line=0; line<mobiusWins.length; line++) {
-            var lineSum = lineScore(mobiusWins[line]);
+            var lineSum = lineScore(brd, mobiusWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = mobiusWins[line];
-                gameEnds(lineSum, winningLine);
-                return;
+                return [true, lineSum, winningLine];
             }
         }
     }
 
     if (gameMode == gameModes[4]) {
         for (line=0; line<kleinWins.length; line++) {
-            var lineSum = lineScore(kleinWins[line]);
+            var lineSum = lineScore(brd, kleinWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = kleinWins[line];
-                gameEnds(lineSum, winningLine);
-                return;
+                return [true, lineSum, winningLine];
             }
         }
     }
@@ -400,22 +414,22 @@ function searchForWin() {
             var lineSum = lineScore(projectiveWins[line]);
             if (Math.abs(lineSum) == 3) {
                 winningLine = projectiveWins[line];
-                gameEnds(lineSum, winningLine);
-                return;
+                return [true, lineSum, winningLine];
             }
         }
     }
 
 
     // check to see if the board is filled up for a tie
-    if (isGridFull()) {
+    if (isGridFull(brd)) {
         winningLine = [0,0,0];
-        gameEnds(0, winningLine);
+        return [true, 0, winningLine];
     }
+    return [false, 0, [0,0,0]];
 }
 
-function isGridFull() {
-    return board.every(row => !row.includes(0));
+function isGridFull(brd) {
+    return brd.every(row => !row.includes(0));
 }
 
 function gameEnds(linescore, winArray) {
@@ -449,8 +463,8 @@ function highlightLine(color, arr) {
 
 
 // returns true if the board space is empty (0)
-function isEmpty(x,y) {
-    return (board[x][y] == 0);
+function isEmpty(brd, x,y) {
+    return (brd[x][y] == 0);
 }
 
 canvas.addEventListener('click', handleClick );
@@ -485,21 +499,61 @@ function newGame(n) {
     resetGame();
 }
 
-function insertPiece(who, x, y) {
+function insertPiece(brd, who, x, y) {
     if (who == 0) {
-        board[x][y] = 1;
+        brd[x][y] = 1;
         drawX(playerColors[0], x, y);
     } else if (who == 1) {
-        board[x][y] = -1;
+        brd[x][y] = -1;
         drawO(playerColors[1], x, y);
     }
 }
 
+function AIcanWin() {
+    // brute force and see if adding O in any of the spots will result in O winning.
+    // If so, then O should go in that spot
+
+    let hypotheticalBoard = structuredClone(board);
+    for (i = 0; i <= 2; i++) {
+        for (j = 0; j <= 2; j++) {
+            hypotheticalBoard = structuredClone(board);
+            if (!isEmpty(hypotheticalBoard, i, j)) {
+                insertPiece(hypotheticalBoard, getTurn(), i, j);
+                let w = searchForWin(hypotheticalBoard);
+                // if AI win found
+                if (w[0]) {
+                    return [i,j];
+                }
+            }
+        }
+    }
+    return [false];
+}
+
 function getAImove() {
     let spot = [];
-    if (aiDifficulty === "random") {
+    // random moves
+    if (aiDifficulty == aiDifficulties[0]) {
         spot = randomSpot();
-        while (!isEmpty(spot[0], spot[1])) {
+        while (!isEmpty(board, spot[0], spot[1])) {
+            spot = randomSpot();
+        }
+    }
+    // normal difficulty
+    if (aiDifficulty == aiDifficulties[1]) {
+        if (AIcanWin()[0]) {
+            spot = AIcanWin();
+        } else {
+            spot = randomSpot();
+            while (!isEmpty(board, spot[0], spot[1])) {
+                spot = randomSpot();
+            }
+        }
+    }
+    // demon difficulty
+    if (aiDifficulty == aiDifficulties[2]) {
+        spot = randomSpot();
+        while (!isEmpty(board, spot[0], spot[1])) {
             spot = randomSpot();
         }
     }
@@ -524,32 +578,38 @@ function handleClick(event) {
     // console.log(`Clicked at coordinates: X=${x}, Y=${y}`);
     // console.log(`Clicked at board coordinates: X=${bx}, Y=${by}`);
 
-    if (validateClickCoords(x,y) && isEmpty(bx,by)) {
+    if (validateClickCoords(x,y) && isEmpty(board, bx,by)) {
         // 2-player mode
         if (numplayers == 2) {
-            insertPiece(getTurn(), bx, by);
-            searchForWin();
+            insertPiece(board, getTurn(), bx, by);
+            w = searchForWin(board);
+            if (w[0]) {
+                gameEnds(w[1], w[2]);
+            }
             turnCount++;
         }
         // 1-player mode
         else if (numplayers == 1) {
             // do x's turn
-            insertPiece(getTurn(), bx, by);
-            searchForWin();
+            insertPiece(board, getTurn(), bx, by);
+            w = searchForWin(board);
+            if (w[0]) {
+                gameEnds(w[1], w[2]);
+            }
             turnCount++;
 
             // do the computer's turn
-            if (!isGridFull() && !gameOver) {
+            if (!isGridFull(board) && !gameOver) {
                 let mv = getAImove();
-                insertPiece(getTurn(), mv[0], mv[1]);
-                searchForWin();
+                insertPiece(board, getTurn(), mv[0], mv[1]);
+                w = searchForWin(board);
+                if (w[0]) {
+                    gameEnds(w[1], w[2]);
+                }
                 turnCount++;
             }
-
-
         }
     }
-
 }
 
 
